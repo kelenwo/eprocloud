@@ -7,12 +7,12 @@
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Active Contracts</h1>
+          <h1 class="h3 mb-2 text-gray-800">Bid Contract</h1>
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Choose from a list of contracts available for bid</h6>
+              <h6 class="m-0 font-weight-bold text-primary">Contract details</h6>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -22,7 +22,7 @@
                     <div class="card-body">
                       <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                          <table class="table">
+                          <table class="table table-responsive">
                             <tbody>
                               <tr>
                                 <td class="table-dark">Title</td>
@@ -56,11 +56,9 @@
                               </tr>
                             </tbody>
                           </table>
+<button class="btn btn-success btn-lg btn-block" data-toggle="modal"  data-target="#bidcontractconfirm">Place Bid</button>
+                        </div>
 
-                        </div>
-                        <div class="col-auto">
-                          <button class="btn btn-success">See more details</button>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -86,25 +84,48 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
+<!-- Bid contract modal -->
+<div class="modal fade" id="bidcontractconfirm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Complete Bid</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div> 
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Amount to Bid <small style="color: red">*</small></label>
+          <input type="number" class="form-control form-control-user" placeholder="Amount">
         </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
+        <br>
+        <div class="form-group">
+          <h6>Clicking "place bid" registers you as one of the bidder for the product, do you understand?
+            <small style="color: red">*</small>
+          <input type="checkbox" id="confirm" class="" style="height:1rem;width:1rem;background-color:#32b449;color:#fff"></h6>
         </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+        <button class="btn btn-success" id="placebid" disabled>Place Bid</button>
       </div>
     </div>
   </div>
+</div>
 
 </body>
 
 </html>
+<script>
+$(document).ready(function() {
+$('#confirm').click(function() {
+  if ($(this).is(':checked')) {
+$('#placebid').removeAttr('disabled'); //enable input
+} else {
+$('#placebid').attr('disabled', true); //disable input
+       }
+});
+
+});
+</script>

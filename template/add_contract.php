@@ -66,7 +66,7 @@
         </div>
         <div class="form-group">
           <label>Contract has renewal? <small style="color: red">*</small></label>
-          <input type="checkbox" class="" style="height:1.5rem;width:1.5rem;background-color:#32b449;color:#fff">
+          <input type="checkbox" class="" style="height:1.1rem;width:1.1rem;background-color:#32b449;color:#fff">
         </div>
         <div class="form-group">
           <label>Renewal Period</label>

@@ -66,7 +66,7 @@
       <hr class="sidebar-divider">
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#workflows-tab" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#workflows-" aria-expanded="true" aria-controls="collapseTwo">
           <i class="fas fa-fw fa-cog"></i>
           <span>Workflows</span>
         </a>
@@ -88,8 +88,8 @@
         <div id="contracts-tab" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-transparent py-2 collapse-inner rounded">
             <h6 class="collapse-header">Contracts:</h6>
-            <a class="collapse-item" href="<?php echo base_url();?>dashboard/add_contract">Add Contract</a>
-            <a class="collapse-item" href="<?php echo base_url();?>dashboard/list_contracts">List Contracts</a>
+            <a class="collapse-item <?php if($this->uri->segment(1)=="contrcts"){echo "active";}?>" href="<?php echo base_url('contracts/add');?>">Add Contract</a>
+            <a class="collapse-item" href="<?php echo base_url();?>contracts/list">List Contracts</a>
           </div>
         </div>
       </li>
@@ -98,16 +98,16 @@
       <hr class="sidebar-divider">
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#contractbidding-tab" aria-expanded="true" aria-controls="collapsePages">
+        <a class="nav-link collapsed <?php if($this->uri->segment(1)=="bidding"){echo "active";}?>" href="#" data-toggle="collapse" data-target="#contractbidding-tab" aria-expanded="true" aria-controls="collapsePages">
           <i class="fas fa-fw fa-folder"></i>
           <span>Contract Bidding</span>
         </a>
         <div id="contractbidding-tab" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-transparent py-2 collapse-inner rounded">
             <h6 class="collapse-header">Contract Bidding:</h6>
-            <a class="collapse-item" href="<?php echo base_url();?>dashboard/current_bids">Active (Approved) Bids</a>
-            <a class="collapse-item" href="<?php echo base_url();?>dashboard/pending_bids">Bids Pending Approval</a>
-            <a class="collapse-item" href="<?php echo base_url();?>dashboard/bid_contract">Bid Contract(s)</a>
+            <a class="collapse-item" href="<?php echo base_url();?>bidding/current">Active (Approved) Bids</a>
+            <a class="collapse-item" href="<?php echo base_url();?>bidding/pending">Bids Pending Approval</a>
+            <a class="collapse-item" href="<?php echo base_url();?>bidding/bid">Bid Contract(s)</a>
 
           </div>
         </div>
@@ -122,10 +122,8 @@
         <div id="events-tab" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-transparent py-2 collapse-inner rounded">
             <h6 class="collapse-header">Events:</h6>
-            <a class="collapse-item" href="utilities-animation.html">Add Event</a>
-            <a class="collapse-item" href="utilities-other.html">List Events</a>
-            <a class="collapse-item" href="<?php echo base_url();?>dashboard/add_contract">Contract Start Date</a>
-            <a class="collapse-item" href="<?php echo base_url();?>dashboard/list_contracts">Contract End Date</a>
+            <a class="collapse-item" href="<?php echo base_url();?>events/add">Add Event</a>
+            <a class="collapse-item" href="<?php echo base_url();?>events/list">List Events</a>
             </div>
         </div>
       </li>
@@ -134,7 +132,7 @@
       <!-- Nav Item - Tables -->
 
       <li class="nav-item">
-        <a class="nav-link" href="charts.html">
+        <a class="nav-link" href="<?php echo base_url();?>dashboard/partners">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Business Partners</span></a>
       </li>
