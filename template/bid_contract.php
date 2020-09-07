@@ -16,18 +16,18 @@
             </div>
             <div class="card-body">
               <div class="table-responsive">
-
+<?php foreach ($contracts as $res ): ?>
                 <div class="col-xl-12 col-md-10 mb-2">
                   <div class="card border-left-success shadow h-100 py-2">
                     <div class="card-body">
                       <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                           <div class="text-lg font-weight-bold text-primary text-capitalize mb-1">
-                            <a href="<?php echo base_url();?>dashboard/contract_details">Construction of faculty of engineering sculpture</a></div>
-                          <div class="h6 mb-0 text-gray-800">Category:<b style="color:green"> Civil</b></div>
-                          <div class="h6 mb-0 text-gray-800">Reference No:<b style="color:green"> PCL0035CV</b></div>
-                          <div class="h6 mb-0 text-gray-800">Bid Opening Date:<b style="color:green"> 20th August, 2020; 11:59pm</b></div>
-                          <div class="h6 mb-0 text-gray-800">Bid Closing Date:<b style="color:green"> 20th September, 2020; 11:59pm</b></div>
+                            <a href="<?php echo base_url();?>bidding/contract_details/<?php echo $res['bid_number'];?>"><?php echo $res['contract_title'];?></a></div>
+                          <div class="h6 mb-0 text-gray-800">Category:<b style="color:green"> <?php echo $res['category'];?></b></div>
+                          <div class="h6 mb-0 text-gray-800">Contract Number:<b style="color:green"> <?php echo $res['bid_number'];?></b></div>
+                          <div class="h6 mb-0 text-gray-800">Bid Opening Date:<b style="color:green"> <?php echo date("d F Y", strtotime($res['bid_opening_date']));?></b></div>
+                          <div class="h6 mb-0 text-gray-800">Bid Closing Date:<b style="color:green"> <?php echo date("d F Y", strtotime($res['bid_closing_date']));?></b></div>
 
                         </div>
                         <div class="col-auto">
@@ -37,27 +37,7 @@
                     </div>
                   </div>
                 </div>
-
-                <div class="col-xl-12 col-md-10 mb-4">
-                  <div class="card border-left-success shadow h-100 py-2">
-                    <div class="card-body">
-                      <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                          <div class="text-lg font-weight-bold text-capitalize text-primary  mb-1">
-                            <a href="#">installation of Power lines at faculty of science</a></div>
-                          <div class="h6 mb-0 text-gray-800">Category:<b style="color:green"> Electrical</b></div>
-                          <div class="h6 mb-0 text-gray-800">Reference No:<b style="color:green"> PCL0035EE</b></div>
-                          <div class="h6 mb-0 text-gray-800">Bid Opening Date:<b style="color:green"> 20th September, 2020; 11:59pm</b></div>
-                          <div class="h6 mb-0 text-gray-800">Bid Closing Date:<b style="color:green"> 20th November, 2020; 11:59pm</b></div>
-
-                        </div>
-                        <div class="col-auto">
-                          <button class="btn btn-success">See more details</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+<?php endforeach;?>
 
               </div>
             </div>

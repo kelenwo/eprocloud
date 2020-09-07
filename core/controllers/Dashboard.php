@@ -20,6 +20,7 @@ Class Dashboard Extends CI_Controller {
     $this->load->view('end');
   }
   public function current_bids() {
+    $data['contracts'] = $this->main_model->get_contracts();
     $data['title'] = 'Dashboard - Current Bids ';
     $this->parser->parse('head',$data);
     $this->parser->parse('current_bids',$data);
@@ -32,7 +33,8 @@ Class Dashboard Extends CI_Controller {
     $this->load->view('end');
   }
   public function bid_contract() {
-    $data['title'] = 'Dashboard - Pending Bids ';
+    $data['contracts'] = ucfirst($this->main_model->get_contracts());
+    $data['title'] = 'Dashboard - Bid Contract ';
     $this->parser->parse('head',$data);
     $this->parser->parse('bid_contract',$data);
     $this->load->view('end');

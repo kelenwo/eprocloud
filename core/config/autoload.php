@@ -50,15 +50,14 @@ $autoload['packages'] = array();
 | 'database' library, which is somewhat of a special case.
 |
 | Prototype:
-|
-|	$autoload['libraries'] = array('database', 'email', 'session');
-|
-| You can also supply an alternative library name to be assigned
+|*/
+//$autoload['libraries'] = array('database', 'email', 'session');
+/* You can also supply an alternative library name to be assigned
 | in the controller:
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array('parser');
+$autoload['libraries'] = array('database','parser','upload','form_validation','session','email');
 
 /*
 | -------------------------------------------------------------------
@@ -89,7 +88,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url');
+$autoload['helper'] = array('url','date','file','form','download','string');
 
 /*
 | -------------------------------------------------------------------
@@ -103,7 +102,7 @@ $autoload['helper'] = array('url');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array();
+$autoload['config'] = array('remita');
 
 /*
 | -------------------------------------------------------------------
@@ -132,4 +131,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array();
+$autoload['model'] = array('user_model','contract_model','admin_model','main_model');

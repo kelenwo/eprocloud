@@ -1,0 +1,390 @@
+<div class="col-xs-12 col-sm-9 content">
+  <div class="panel panel-default">
+<div class="panel-heading">
+  <h3 class="panel-title"><a href="javascript:void(0);" class="toggle-sidebar">
+    <span class="fa fa-angle-double-left" data-toggle="offcanvas" title="Maximize Panel"></span></a>contracts</h3>
+</div>
+   <div class="panel-body">
+<div class="content-row">
+   <div class="col-md-12 panel">
+<div class="panel-heading">
+
+<div class="panel-options">
+<a class="bg" data-target="#sample-modal-dialog-1" data-toggle="modal" href="#sample-modal"><i class="entypo-cog"></i></a>
+<a data-rel="collapse" href="#"><i class="entypo-down-open"></i></a>
+<a data-rel="close" href="#!/tasks" ui-sref="Tasks"><i class="entypo-cancel"></i></a>
+</div>
+</div>
+
+<div class="">
+  <div class="">
+ <div class="tab-contents">
+  <ul id="myTab1" class="nav nav-tabs nav-justified">
+ <li class="active"><a class="" href="#tab1" data-toggle="tab">Contracts</a></li>
+  <li class="" ><a class="" href="#tab2" data-toggle="tab">Publish a contract</a></li>
+
+   </ul>
+  <div id="myTabContent" class="tab-content">
+
+<!-- View contracts Start -->
+ <div class="tab-pane fade  active in" id="tab1">
+ <div class="col-md-12">
+  <div class="panel">
+  <table class="table table-hover table-responsive custom-tbl">
+<thead>
+<tr>
+  <th>#</th>
+  <th>ContractTitle</th>
+  <th>Contract number</th>
+  <th>Location</th>
+  <th>Bid Start</th>
+  <th>Bid Stop</th>
+  <th>Actions</th>
+</tr>
+</thead>
+  <tbody>
+<?php if($contract==false): ?>
+  <tr><td colspan="7"><h4 class="text-center">NO DATA TO DISPLAY</h4></td></tr>
+<?php else: $i = 1;?>
+<?php  foreach($contract as $req): ?>
+<tr>
+<td><?php echo $i++.'.';?>
+<td><?php echo $req['contract_title']; ?></td>
+<td><?php echo $req['bid_number']; ?></td>
+<td><?php echo $req['location']; ?></td>
+  <td><?php echo $req['bid_opening_date']; ?></td>
+<td><?php echo $req['bid_closing_date']; ?></td>
+<td class="actions">
+  <a href="#edit_contract_<?php echo $req['id'];?>" data-toggle="modal">Edit&nbsp;<i class="fas fa-edit"></i></a>|
+  <a id="del-contract-<?php echo $req['id'];?>"><b style="color:red;">Delete&nbsp;<i class="far fa-trash-alt"></i></a></b>
+  <form id="del_contract-<?php echo $req['id'];?>">
+  <input type="hidden" name="id" value="<?php echo $req['id'];?>">
+  <input type="hidden" name="type" value="contract">
+</form>
+</td>
+</tr>
+<!--edit contract modal -->
+<div class="modal fade" id="edit_contract_<?php echo $req['id'];?>" tabindex="-1" role="dialog">
+<div class="modal-dialog modal-dialog-centered" role="document">
+ <div class="modal-content">
+ <div class="modal-header">
+<h3 class="modal-title text-center">Edit Contract</h3>
+ </div>
+ <div class="modal-body">
+<form name="edit_contract-<?php echo $req['id'];?>" method="post" id="edit_contract-<?php echo $req['id'];?>">
+
+ <div class="form-group">
+<label for="title">Title</label>
+<div class="input-group">
+ <span class="input-group-addon">
+ <i class="fa fa-user"></i>
+ </span>
+<input type="text" name="contract_title" value="<?php echo $req['contract_title'];?>" required class="form-control" id="contract_title-<?php echo $req["id"];?>">
+<input type="hidden" name="id" value="<?php echo $req['id'];?>">
+</div></div>
+
+<div class=""> <div class="form-group">
+<label for="owner">Contract Owner</label>
+<div class="input-group">
+<span class="input-group-addon">
+<i class="fa fa-suitcase"></i>
+</span>
+<input type="text" name="owner" value="<?php echo $req['owner'];?>"   class="form-control" id="owner" placeholder="Contract Owner">
+</div></div></div>
+
+<div class="">
+<div class="form-group">
+<label for="Category">Category</label>
+<div class="input-group">
+<span class="input-group-addon">
+<i class="fas fa-folder-open"></i>
+</span>
+<select class="form-control" name="category" id="category-select">
+<option>-Select Category</option>
+<option value="civil">Civil</option>
+<option value="Electrical">Electrical</option>
+    </select>
+</div></div></div>
+
+<div class=""> <div class="form-group">
+<label for="Location">Location</label>
+<div class="input-group">
+<span class="input-group-addon">
+<i class="fas fa-map-marker-alt"></i>
+</span>
+<input type="text" name="location" value="<?php echo $req['location'];?>"   class="form-control" id="location" placeholder="Location">
+</div></div></div>
+
+<div class=""> <div class="form-group">
+<label for="Bid Opening date">Bid Opening Date</label>
+<div class="input-group">
+<span class="input-group-addon">
+<i class="fas fa-calendar-plus"></i>
+</span>
+<input type="date" name="bid_opening_date" value="<?php echo $req['bid_opening_date'];?>"   class="form-control" id="bid_opening_date" placeholder="Bid Opening Date">
+</div></div></div>
+
+<div class=""> <div class="form-group">
+<label for="Bid Closing date">Bid Closing Date</label>
+<div class="input-group">
+<span class="input-group-addon">
+<i class="fa fa-calendar-times"></i>
+</span>
+<input type="date" name="bid_closing_date" value="<?php echo $req['bid_closing_date'];?>"   class="form-control" id="bid_closing_date" placeholder="Bid Closing Date">
+</div></div></div>
+
+<div class="">
+<div class="form-group">
+<label for="Description">Description</label>
+<div class="input-group">
+<span class="input-group-addon">
+<i class="far fa-newspaper"></i>
+</span>
+<textarea class="form-control" name="description"><?php echo $req['description'];?></textarea>
+</div></div></div>
+
+</form>
+ <div class="modal-footer">
+<button type="button" id="cancel" class="btn btn-secondary" data-dismiss="modal" >CANCEL</button>
+<button type="button" id="save-contract-edit-<?php echo $req['id'];?>" class="btn btn-primary">SUBMIT <i id="loadingcontract-<?php echo $req['id'];?>" class="fa fa-gear fa-spin"></i></button>
+ </div>
+
+</div>
+</div>
+ </div>
+<script>
+$(document).ready(function() {
+
+//delete contract
+$('#loadingcontract-<?php echo $req["id"];?>').hide();
+$("#del-contract-<?php echo $req['id'];?>").click(function(){
+  if (confirm("Do you want to delete?")){
+    $.ajax({
+      url:'<?php echo base_url()."ucp/manage/delete_item";?>',
+      type: "POST",
+      data: $('#del_contract-<?php echo $req["id"];?>').serialize(),
+      success:function(data) {
+if(data=='true') {
+window.location.href = "<?php echo $_SERVER['PHP_SELF'];?>";
+} else {
+  alert(data);
+}
+}
+});
+  } {
+    return false;
+  }
+});
+//Save contract edit
+$("#save-contract-edit-<?php echo $req['id'];?>").click(function() {
+$("#loadingcontract-<?php echo $req['id'];?>").show();
+$.ajax({
+  url:'<?php echo base_url()."ucp/manage/update_contract";?>',
+  type: "POST",
+  data: $("#edit_contract-<?php echo $req['id'];?>").serialize(),
+  success:function(data) {
+$("#loadingcontract-<?php echo $req['id'];?>").hide();
+  if(data=="true") {
+$("#editcontractmsg-<?php echo $req['id'];?>").html('saved');
+$("#edit_contract-<?php echo $req['id'];?>")[0].reset();
+window.location.href = "<?php echo $_SERVER['PHP_SELF'];?>";
+  } else {
+$('#editcontractmsg-<?php echo $req["id"];?>').html(data);
+  }
+  }
+});
+});
+
+
+$('#document-<?php echo $req['id'];?>').on('change',function() {
+$('#upload-<?php echo $req['id'];?>').submit();
+});
+
+$('#upload-<?php echo $req['id'];?>').submit(function(e){
+$('#loading-file-<?php echo $req['id'];?>').show();
+            e.preventDefault();
+                 $.ajax({
+                     url:'<?php echo base_url();?>ucp/manage/do_uploads',
+                     type:"post",
+                     data:new FormData(this),
+                     processData:false,
+                     contentType:false,
+                     cache:false,
+                     async:false,
+                      success: function(data){
+$('#loading-file-<?php echo $req['id'];?>').hide();
+$('#success-<?php echo $req['id'];?>').html(data);
+    }
+                 });
+            });
+
+
+});
+</script>
+<?php endforeach;
+endif;?>
+</tbody>
+</table>
+  </div>
+  </div>
+  </div>
+
+<!-- Publish contracts start-->
+ <div class="tab-pane" id="tab2">
+   <div class="panel">
+     <form id="add_contract">
+       <div class="container-fluid">
+
+             <div class="col-md-6 col-xs-6">
+           <div class="form-group">
+           <label for="Title">Title</label>
+           <div class="input-group">
+             <span class="input-group-addon">
+             <i class="fa fa-user"></i>
+             </span>
+           <input type="text" name="contract_title" required=""   class="form-control" id="title" placeholder="Contract Title">
+         </div></div></div>
+
+         <div class="col-md-6 col-xs-6"> <div class="form-group">
+      <label for="owner">Contract Owner</label>
+      <div class="input-group">
+        <span class="input-group-addon">
+        <i class="fa fa-suitcase"></i>
+        </span>
+      <input type="text" name="owner" required=""   class="form-control" id="owner" placeholder="Contract Owner">
+    </div></div></div>
+
+      <div class="col-md-4 col-xs-6">
+    <div class="form-group">
+    <label for="Category">Category</label>
+    <div class="input-group">
+      <span class="input-group-addon">
+      <i class="fas fa-folder-open"></i>
+      </span>
+      <select class="form-control" name="category" id="category-select">
+        <option>-Select Category</option>
+        <option value="civil">Civil</option>
+        <option value="Electrical">Electrical</option>
+             </select>
+    </div></div></div>
+
+    <div class="col-md-8 col-xs-6"> <div class="form-group">
+ <label for="Location">Location</label>
+ <div class="input-group">
+   <span class="input-group-addon">
+   <i class="fas fa-map-marker-alt"></i>
+   </span>
+ <input type="text" name="location" required=""   class="form-control" id="location" placeholder="Location">
+</div></div></div>
+
+<div class="col-md-6 col-xs-6"> <div class="form-group">
+<label for="Bid Opening date">Bid Opening Date</label>
+<div class="input-group">
+<span class="input-group-addon">
+<i class="fas fa-calendar-plus"></i>
+</span>
+<input type="date" name="bid_opening_date" required=""   class="form-control" id="bid_opening_date" placeholder="Bid Opening Date">
+</div></div></div>
+
+<div class="col-md-6 col-xs-6"> <div class="form-group">
+<label for="Bid Closing date">Bid Closing Date</label>
+<div class="input-group">
+<span class="input-group-addon">
+<i class="fa fa-calendar-times"></i>
+</span>
+<input type="date" name="bid_closing_date" required=""   class="form-control" id="bid_closing_date" placeholder="Bid Closing Date">
+</div></div></div>
+
+ <input type="hidden" name="date" value="<?php echo date('d-M-Y'); ?>">
+        <div class="col-md-12 col-xs-12">
+      <div class="form-group">
+      <label for="Description">Description</label>
+      <div class="input-group">
+        <span class="input-group-addon">
+        <i class="far fa-newspaper"></i>
+        </span>
+        <textarea class="form-control" name="description"></textarea>
+      </div></div></div>
+ </form>
+
+        <div class="col-md-12 col-xs-12">
+      <div class="form-group">
+              <button class="btn btn-primary" id="submit" type="button">Submit
+          <i class="fa fa-gear fa-spin" id="loading"></i>
+        </button>
+      </div></div>
+          <div style="color:red;" class="form-group" id="msg"></div>
+        </div>
+        </div>
+ </div>
+<!--Publish contract end -->
+
+</div>
+ </div>
+</div>
+
+ </div>
+ </div>
+</div>
+</div>
+  </div>
+</div>
+<script>
+$(document).ready(function() {
+
+//Hide all loading icons
+$('#loading-issue').hide();
+$('#loading-file').hide();
+$('#loading').hide();
+$('#loading-vol').hide();
+//$('#submit').attr('disabled','disabled');
+//$('#success').hide();
+
+//get Issue list from db
+$('#archive-select').on('change',function() {
+$('#loading-vol').show();
+$.ajax({
+  url:'<?php echo base_url()."ucp/manage/get_volume";?>',
+  type: "POST",
+  data: $('#add_contract').serialize(),
+  success:function(data) {
+$('#loading-vol').hide();
+$('#volume-select').html(data);
+  }
+});
+});
+
+//get Issue list from db
+$('#volume-select').on('change',function() {
+$('#loading-issue').show();
+$.ajax({
+  url:'<?php echo base_url()."ucp/manage/get_issue";?>',
+  type: "POST",
+  data: $('#add_contract').serialize(),
+  success:function(data) {
+$('#loading-issue').hide();
+$('#getissue').html(data);
+  }
+});
+});
+
+
+$('#submit').on('click',function() {
+$('#loading').show();
+$.ajax({
+  url:'<?php echo base_url()."ucp/manage/publish_contract";?>',
+  type: "POST",
+  data: $('#add_contract').serialize(),
+  success:function(data) {
+$('#loading').hide();
+if(data=="true") {
+alert('Contract has been published successfully');
+window.location.href = "<?php echo $_SERVER['PHP_SELF'];?>";
+} else {
+  $('#msg').html(data);
+}
+  }
+})
+});
+});
+</script>

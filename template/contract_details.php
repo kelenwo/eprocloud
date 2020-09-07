@@ -20,39 +20,33 @@
                 <div class="col-xl-12 col-md-10 mb-2">
                   <div class="card h-100 py-2">
                     <div class="card-body">
-                      <div class="row no-gutters align-items-center">
+                      <div class="row no-gutters ">
                         <div class="col mr-2">
                           <table class="table table-responsive">
                             <tbody>
                               <tr>
                                 <td class="table-dark">Title</td>
-                                <td>Construction of faculty of engineering sculpture</td>
+                                <td>{contract_title}</td>
                               </tr>
                               <tr>
                                 <td class="table-dark">Description</td>
-                                <td>Construction of faculty of engineering sculptureConstruction of faculty of engineering sculpture
-                                Construction of faculty of engineering sculpture
-                              Construction of faculty of engineering sculpture</td>
+                                <td>{description}</td>
                               </tr>
                               <tr>
                                 <td class="table-dark">Category</td>
-                                <td>Civil</td>
+                                <td>{category}</td>
                               </tr>
                               <tr>
                                 <td class="table-dark">Location</td>
-                                <td>Faculty of engineering, University of uyo, Uyo, Akwa Ibom state, Nigeria</td>
-                              </tr>
-                              <tr>
-                                <td class="table-dark">Payment Mode</td>
-                                <td>Offline</td>
+                                <td>{location}</td>
                               </tr>
                               <tr>
                                 <td class="table-dark">Bid Opening date</td>
-                                <td>20th August, 2020; 11:59pm</td>
+                                <td><?php echo date("d F Y", strtotime($bid_opening_date));?></td>
                               </tr>
                               <tr>
                                 <td class="table-dark">Bid Closing date</td>
-                                <td>20th September, 2020; 11:59pm</td>
+                                <td><?php echo date("d F Y", strtotime($bid_closing_date));?></td>
                               </tr>
                             </tbody>
                           </table>
@@ -93,11 +87,12 @@
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
-      </div> 
+      </div>
+      <form id="place_bid">
       <div class="modal-body">
         <div class="form-group">
           <label>Amount to Bid <small style="color: red">*</small></label>
-          <input type="number" class="form-control form-control-user" placeholder="Amount">
+          <input type="text" name="bid_amount" class="form-control form-control-user" placeholder="Amount">
         </div>
         <br>
         <div class="form-group">
@@ -108,7 +103,18 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-        <button class="btn btn-success" id="placebid" disabled>Place Bid</button>
+        <button class="btn btn-success" id="placebid" disabled type="button">Place Bid <i id="loading" class="fas fa-cog fa-spin"></i></button>
+
+        <input type="hidden" name="contract_title" value="{contract_title}">
+        <input type="hidden" name="bid_number" value="{bid_number}">
+        <input type="hidden" name="category" value="{category}">
+        <input type="hidden" name="bid_by" value="kelvin">
+        <input type="hidden" name="owner" value="{owner}">
+        <input type="hidden" name="location" value="{location}">
+        <input type="hidden" name="bid_date" value="<?php echo date('d-m-Y');?>">
+        <input type="hidden" name="bid_time" value="<?php echo time();?>">
+        <input type="hidden" name="bid_status" value="Pending">
+</form>
       </div>
     </div>
   </div>
@@ -119,6 +125,7 @@
 </html>
 <script>
 $(document).ready(function() {
+$('#loading').hide();
 $('#confirm').click(function() {
   if ($(this).is(':checked')) {
 $('#placebid').removeAttr('disabled'); //enable input
@@ -127,5 +134,22 @@ $('#placebid').attr('disabled', true); //disable input
        }
 });
 
+$('#placebid').on('click',function() {
+$('#loading').show();
+$.ajax({
+  url:'<?php echo base_url()."bidding/placebid";?>',
+  type: "POST",
+  data: $('#place_bid').serialize(),
+  success:function(data) {
+$('#loading').hide();
+if(data=="true") {
+alert('Bid has been placed successfully');
+window.location.href = "<?php echo base_url('bidding/pending');?>";
+} else {
+  alert(data);
+}
+  }
+})
+});
 });
 </script>
