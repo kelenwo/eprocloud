@@ -6,9 +6,9 @@ class Manage extends CI_Controller {
   {
           parent::__construct();
 if(empty($this->session->email)) {
-header('Location:'.base_url().'ucp/login');
+  header('Location:'.base_url().'ucp/login/signin/return/'.str_replace('/','_',uri_string()));
 }
-if($this->session->rights !=='administrator') {
+elseif($this->session->rights !=='administrator') {
     header('Location:'.base_url('dashboard'));
 }
 }

@@ -5,6 +5,10 @@ Class Login Extends CI_Controller{
   public function index() {
   $this->load->view('admin/login');
   }
+  public function signin($return,$link) {
+  $data['link'] = str_replace('_','/',$link);
+  $this->parser->parse('admin/logins',$data);
+  }
   public function logins() {
   $login = $this->user_model->login();
   if($login==false) {

@@ -4,7 +4,7 @@ Class Events Extends CI_Controller {
           parent::__construct();
 //if not logged in, redirect to login page
 if(empty($this->session->email)) {
-  header('Location:'.base_url().'/ucp/login');
+  header('Location:'.base_url().'ucp/login/signin/return/'.str_replace('/','_',uri_string()));
 }
 }
   public function add() {

@@ -104,7 +104,7 @@
 	success:function(data){
 	$('#loading').hide();
 if(data=='true') {
-	window.location.href = "<?php echo base_url('dashboard/index');?>";
+	window.location.href = "<?php echo base_url().$link;?>";
 } else {
 	alert(data);
 }

@@ -4,7 +4,7 @@ Class Dashboard Extends CI_Controller {
   public function __construct()  {
           parent::__construct();
 if(empty($this->session->email)) {
-  header('Location:'.base_url().'ucp/login');
+    header('Location:'.base_url().'ucp/login/signin/return/'.str_replace('/','_',uri_string()));
 }
 }
   public function index() {
