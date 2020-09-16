@@ -1,45 +1,237 @@
 <script src="<?php echo base_url();?>template/vendor/datatables/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url();?>template/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
+<style>
+.modal { overflow-y: auto !important}
+</style>
 <!-- Page level custom scripts -->
 <script src="<?php echo base_url();?>template/assets/js/demo/datatables-demo.js"></script>
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Current Bids (Approved)</h1>
+          <h1 class="h3 mb-2 text-gray-800">Your Bids (Approved)</h1>
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary"><b style="color:green;">Active (Approved)</b> Bids</h6>
+            <h6 class="m-0 font-weight-bold text-primary"><b style="color:gren;">Approved</b> Bids</h6>
             </div>
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                  <thead>
-                    <tr>
-                      <th>Contract Title</th>
-                      <th>Category</th>
-                      <th>Bid Number</th>
-                      <th>Bid Price</th>
-                      <th>Bid Status</th>
-                      <th>Bid Date</th>
-                    </tr>
-                  </thead>
 
-                  <tbody>
-                    <tr>
-                      <td>Construction of Roundabout at faculty of engineering</td>
-                      <td>Construction (Civil)</td>
-                      <td>PCL0035CV</td>
-                      <td>350,000</td>
-                      <td>Pending</td>
-                      <td>10th March, 2020</td>
-                    </tr>
+<!-- View contracts Start -->
+  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+<thead>
+<tr>
+  <th>#</th>
+  <th>Contract Title</th>
+  <th>Contract number</th>
+  <th>Category</th>
+  <th>Bid price</th>
+  <th>Status</th>
+  <th>Contract Status</th>
+  <th>Date</th>
+</tr>
+</thead>
+  <tbody>
+<?php if($bid==false): ?>
+  <tr><td colspan="7"><h4 class="text-center">NO DATA TO DISPLAY</h4></td></tr>
+<?php else: $i = 1;?>
+<?php  foreach($bid as $key => $req): ?>
+<tr>
+<td><?php echo $i++.'.';?>
+<td><a href="#viewcontract-<?php echo $req['id'];?>" data-toggle="modal"><?php echo $req['contract_title']; ?></a></td>
+<td><?php echo $req['bid_number']; ?></td>
+<td><?php echo $req['category']; ?></td>
+<td><?php echo $req['bid_amount']; ?></td>
+<td><?php echo $req['bid_status']; ?></td>
+<td><?php if($req['has_finished']=="completed"): ?>
+    <?php echo $req['has_finished'];?>
+  <?php else:?>
+  <?php echo $req['contract_status'];?>
+  <?php endif;?></td>
+<td><?php echo date("d F Y", strtotime($req['bid_date']));?></td>
 
-                  </tbody>
-                </table>
+<!-- delete contract -->
+</tr>
+<form id="del_contract-<?php echo $req['id'];?>">
+<input type="hidden" name="id" value="<?php echo $req['id'];?>">
+<input type="hidden" name="type" value="contract">
+</form>
+<!-- delete contract end -->
+
+ <!-- List contract modal -->
+ <div class="modal fade" id="viewcontract-<?php echo $req['id'];?>" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+       <div class="modal-header inline">
+       <div class="text-center mt-2">
+<span class="fa-stack text-main fa-2x" style="margin-top: -0.7em; font-size: 1.1em !important;">
+   <i class="fas fa-circle fa-stack-2x"></i>
+   <i class="fas fa-newspaper fa-stack-1x fa-inverse"></i>
+ </span> <h3 class="inline">Contract Bid Information</h3>
+ </div>
+</div>
+       <div class="modal-body">
+
+<!-- General Information start-->
+ <div class="col-md-12">
+<span class="fa-stack text-success fa-2x" style="font-size: 0.9em !important;">
+<i class="fas fa-circle fa-stack-2x"></i>
+<i class="far fa-copy fa-stack-1x fa-inverse"></i>
+</span> <h5 class="inline">General Information</h5>
+</div>
+<div class="col-sm-11 col-md-11 card  bg-light ml-4">
+ <div class="card-body" style="margin: -5px!important;">
+<div class="row">
+   <div class="col-sm-6 col-md-6 mt-3">
+ <div class="text-sm text-primary ml-3 text-capitalize"><small class="text-success">Contract Title:</small>
+ <br>
+<h6><?php echo $req['contract_title'];?></h6></div>
+<br>
+           <div class="ml-3">
+           <div class="text-sm text-primary text-capitalize"><small class="text-success">Category:</small>
+           <br>
+         <h6><?php echo $req['category'];?></h6></div>
+         <br>
+         <div class="text-sm text-primary text-capitalize"><small class="text-success">Contract Number:</small>
+         <br>
+       <h6><?php echo $req['bid_number'];?></h6></div>
+       <br>
+         <div class="text-sm text-primary text-capitalize"><small class="text-success">Location:</small>
+         <br>
+       <h6><?php echo $req['location'];?></h6></div>
+       <br>
+       <div class="text-sm text-primary text-capitalize"><small class="text-success">Contract Owner:</small>
+       <br>
+     <h6><?php echo $req['owner'];?></h6></div>
+     <br>
+     <?php if($req['contract_status']=="active"): ?>
+       <div class="text-sm text-primary text-capitalize"><small class="text-success">Contract Start Date:</small>
+       <br>
+     <h6><?php echo date("d F, Y", strtotime($req['start_date']));?></h6></div>
+   <?php endif;?>
+       </div></div>
+         <div class="col-sm-5 col-md-5 ml-4 mt-3">
+           <div class="text-sm text-primary text-capitalize"><small class="text-success">Bid Status:</small>
+           <br>
+         <h6><?php echo $req['bid_status'];?></h6></div><br>
+       <div class="text-sm text-primary text-capitalize"><small class="text-success">Bid Date:</small>
+       <br>
+     <h6><?php echo $req['bid_date'];?></h6></div>
+<?php if($req['bid_status']!=="pending"):?>
+     <br>
+     <div class="text-sm text-primary text-capitalize"><small class="text-success">Billing Cycle:</small>
+     <br>
+    <h6><?php echo $req['billing_cycle'];?></h6></div>
+    <br>
+    <div class="text-sm text-primary text-capitalize"><small class="text-success">Approval Date:</small>
+    <br>
+   <h6><?php echo $req['approval_date'];?></h6></div>
+   <?php if($req['contract_status']=="active"): ?>
+     <br>
+     <div class="text-sm text-primary text-capitalize"><small class="text-success">Contract Status:</small>
+     <br>
+     <?php if($req['has_finished']=='completed'): ?>
+              <h6><?php echo $req['has_finished'];?></h6>
+            <?php else: ?>
+              <h6><?php echo $req['contract_status'];?></h6>
+            <?php endif;?>
+ </div>
+ <?php endif;?>
+ <?php if($req['end_date']!==''): ?>
+   <br>
+   <div class="text-sm text-primary text-capitalize"><small class="text-success">Contract End Date:</small>
+   <br>
+ <h6><?php echo date("d F, Y", strtotime($req['end_date']));?></h6></div>
+<?php endif;?>
+  <?php endif;?>
+         </div>
+     </div>
+       </div>
+<!-- General Information end -->
+
+     </div>
+</div>
+       <div class="modal-footer inline">
+         <div class="form-group text-center mt-3">
+           <span style="color:green;" id="msg-<?php echo $req['id'];?>"></span>
+           <span style="color:red;" id="msg2-<?php echo $req['id'];?>"></span>
+           <?php if($req['end_date']==''): ?>
+             <form id="confirm_<?php echo $req['id'];?>" method="post" action="<?php echo base_url();?>contracts/confirm_contract">
+               <input type="hidden" name="id" value="<?php echo $req['id'];?>">
+               <input type="hidden" name="bid_by_email" value="<?php echo $req['bid_by_email'];?>">
+             </form>
+     <button class="btn pl-5 pr-5 btn-success" id="save-<?php echo $req['id'];?>"><i class="far fa-edit"></i> Activate contract &nbsp;
+     <i id="loading-<?php echo $req['id'];?>" class="fas fa-cog fa-spin"></i></button>
+     <?php endif;?>
+     <?php if($req['contract_status']=='active'): ?>
+       <form id="update_contract_<?php echo $req['id'];?>">
+         <input type="hidden" name="id" value="<?php echo $req['id'];?>">
+         <input type="hidden" name="has_finished" value="yes">
+       </form>
+<button class="btn pl-5 pr-5 btn-success" id="save-<?php echo $req['id'];?>"<?php if($req['has_finished']!=='') {echo 'disabled';}?> >
+  <i class="far fa-edit"></i> Confirm Contract Completed &nbsp;
+<i id="loading-<?php echo $req['id'];?>" class="fas fa-cog fa-spin"></i></button>
+<?php endif;?>
+           <button class="btn pl-5 pr-5 btn-info" type="button" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i> Close</button>
+        </div>
+       </div>
+     </div>
+   </div>
+ </div>
+<!--List Contract modal End -->
+<script>
+$(document).ready(function() {
+
+//delete contract
+$('#loading-<?php echo $req["id"];?>').hide();
+$("#del-contract-<?php echo $req['id'];?>").click(function(){
+  if (confirm("Do you want to delete?")){
+    $.ajax({
+      url:'<?php echo base_url()."bidding/delete_item";?>',
+      type: "POST",
+      data: $('#del_contract-<?php echo $req["id"];?>').serialize(),
+      success:function(data) {
+if(data='true') {
+window.location.href = "<?php echo $_SERVER['PHP_SELF'];?>";
+} else {
+  alert(data);
+}
+}
+});
+  } {
+    return false;
+  }
+});
+
+$("#save-<?php echo $req['id'];?>").click(function() {
+$("#loading-<?php echo $req['id'];?>").show();
+$.ajax({
+  url:'<?php echo base_url()."ucp/manage/update_contract_bid";?>',
+  type: "POST",
+  data: $("#update_contract_<?php echo $req['id'];?>").serialize(),
+  success:function(data) {
+$('#msg2-<?php echo $req["id"];?>').html('');
+$('#msg-<?php echo $req["id"];?>').html('');
+$("#loading-<?php echo $req['id'];?>").hide();
+  if(data=="true") {
+$("#msg-<?php echo $req['id'];?>").html('You have confirmed contract completed, Pending Verification!!');
+$("#save-<?php echo $req['id'];?>").attr('disabled','disabled');
+  } else {
+$('#msg2-<?php echo $req["id"];?>').html(data);
+  }
+  }
+});
+});
+
+
+});
+</script>
+<?php endforeach;
+endif;?>
+</tbody>
+</table>
               </div>
             </div>
           </div>
@@ -49,35 +241,13 @@
 
       </div>
       <!-- End of Main Content -->
-    </div>
-    <!-- End of Content Wrapper -->
-
-  </div>
-  <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
+
 
 </body>
 

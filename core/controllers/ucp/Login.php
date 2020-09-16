@@ -25,20 +25,6 @@ if($verify==true) {
   echo 'Email address already exist';
 } else {
   $code = random_string('numeric',4); //Generate verification code
-
-  //Initialize mail sending
-  $config['protocol'] = "smtp";
-  $config['smtp_host']    = 'ssl://smtp.googlemail.com';
-  $config['smtp_port']    = '465';
-  $config['smtp_timeout'] = '7';
-  $config['smtp_user']    = 'sydneybestmanelenwo@gmail.com';
-  $config['smtp_pass']    = 'dubemski04';
-  $config['charset']    = 'utf-8';
-  $config['newline']    = "\r\n";
-  $config['mailtype'] = 'text'; // or html
-  $config['validation'] = FALSE;
-
-  $this->email->initialize($config);
   $this->email->from('ePROCLOUD');
   $this->email->to($this->input->post('email'));
   $this->email->subject('ePROCLOUD Verification');
@@ -61,9 +47,12 @@ echo 'true';
 }
 
 public function auth() {
-  $mail = $this->session->email;
+  $mail = $this->input->post('email');
   $code = $this->user_model->auth($mail);
   $pass = $this->input->post('auth');
+  if($code==false) {
+    echo "An error occured";
+  } else {
   if(password_verify($pass,$code->auth)) {
     $update = $this->user_model->update_user_auth();
     if($update==true) {
@@ -74,6 +63,7 @@ public function auth() {
   } else { echo $update;
   }
 } else { echo 'The code you entered is invalid';}
+}
 
 }
 

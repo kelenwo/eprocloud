@@ -102,7 +102,7 @@ $autoload['helper'] = array('url','date','file','form','download','string');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array('remita');
+$autoload['config'] = array('email');
 
 /*
 | -------------------------------------------------------------------

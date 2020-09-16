@@ -20,35 +20,49 @@
     <!-- Card Content - Collapse -->
   <div class="collapse show" id="collapseCardExample" style="">
       <div class="card-body">
+        <form id="add_event">
         <div class="form-group">
           <label>Title <small style="color: red">*</small></label>
-          <input type="text" class="form-control form-control-user" placeholder="Event Title">
+          <input type="text" name="event_title" class="form-control form-control-user" placeholder="Event Title">
         </div>
         <div class="form-group">
           <label>Type <small style="color: red">*</small></label>
-          <select name="status" class="form-control">
-          <option value="Active">Category</option>
-          <option value="inactive">Inactive</option>
+          <select name="type" class="form-control">
+          <option >Category</option>
+          <option value="contract">Contract</option>
+          <option value="bid opening">Bid opening</option>
+          <option value="bid closing">Bid closing</option>
+          <option value="contract expiry">Contract Expiry</option>
+          <option value="billing">Billing</option>
+          <option value="others">Others</option>
         </select>
                 </div>
                 <div class="form-group">
-                  <label>Start Date <small style="color: red">*</small></label>
-                  <input type="date" class="form-control form-control-user" placeholder="Contract Title">
+                  <label>Date <small style="color: red">*</small></label>
+                  <input name="event_date" type="date" class="form-control form-control-user">
                 </div>
+
+                <div class="form-group">
+                  <label>Time <small style="color: red">*</small></label>
+                  <input name="event_time" type="time" class="form-control form-control-user">
+                </div>
+
                 <div class="form-group">
                   <label>Description <small style="color: red">*</small></label>
-                  <input type="text" class="form-control form-control-user" placeholder="Description">
+                  <input type="text" name="description" class="form-control form-control-user" placeholder="Description">
                 </div>
       </div>
           </div>
             </div>
             </div>
-
+<input type="hidden" name="owner" value="{name}">
+<input type="hidden" name="owner_email" value="{email}">
+<input type="hidden" name="date" value="<?php echo date("d-M-Y");?>">
         <div class="form-group col-sm-8 col-md-8">
-          <button class="btn btn-success btn-block">SUBMIT</button>
+          <button class="btn btn-success btn-block" type="button" id="add">SUBMIT <i id="loading" class="fas fa-cog fa-spin"></i></button>
         </div>
       </div>
-
+</form>
         </div>
         <!-- /.container-fluid -->
 
@@ -66,6 +80,32 @@
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
+
+  <script>
+  $(document).ready(function() {
+
+  //Hide all loading icons
+  $('#loading').hide();
+
+  $('#add').on('click',function() {
+  $('#loading').show();
+  $.ajax({
+    url:'<?php echo base_url()."events/publish_event";?>',
+    type: "POST",
+    data: $('#add_event').serialize(),
+    success:function(data) {
+  $('#loading').hide();
+  if(data='true') {
+  alert('Event has been saved successfully');
+  window.location.href = "<?php echo base_url();?>events/list";
+} else {
+    alert(data);
+  }
+    }
+  })
+  });
+  });
+  </script>
 </body>
 
 </html>

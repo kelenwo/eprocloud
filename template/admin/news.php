@@ -46,11 +46,11 @@
 <tr>
 <td><?php echo $i++.'.';?>
 <td><?php echo $req['title']; ?></td>
-<td><?php echo $req['date']; ?></td>
+<td><?php echo date("d F, Y",strtotime($req['date'])); ?></td>
 <td><?php echo $req['status']; ?></td>
 <td class="actions">
-  <a href="#edit_news_<?php echo $req['id'];?>" data-toggle="modal">Edit&nbsp;<i class="fa fa-pencil"></i></a>|
-  <a id="del-news-<?php echo $req['id'];?>"><b style="color:red;">delete&nbsp;<i class="fa fa-trash-o"></i></a></b>
+  <a href="#edit_news_<?php echo $req['id'];?>" data-toggle="modal">Edit&nbsp;<i class="far fa-edit"></i></a>|
+  <a id="del-news-<?php echo $req['id'];?>"><b style="color:red;">delete&nbsp;<i class="fas fa-trash-alt"></i></a></b>
   <form id="del_news-<?php echo $req['id'];?>">
   <input type="hidden" name="id" value="<?php echo $req['id'];?>">
   <input type="hidden" name="type" value="news">
@@ -90,14 +90,10 @@
 <label for="status">Status</label>
 <div class="input-group">
  <label class="toggle">
-       <input type="radio" name="status" value="Active" id="status">
+       <input type="checkbox" name="status" value="Active" <?php if($req['status']=='Active') { echo 'checked';}?>>
          <span class="handle"></span>
-       </label> <b>Enable</b>
-       <br>
-       <label class="toggle">
-             <input type="radio" name="status" value="Disabled" id="status">
-               <span class="handle"></span>
-             </label> <b>Disable</b>
+       </label>&nbsp;&nbsp; <b>Active</b>
+
      </div></div></div>
  <div class="modal-footer">
 <button type="button" id="cancel" class="btn btn-secondary" data-dismiss="modal" >CANCEL</button>
@@ -174,7 +170,7 @@ endif;?>
            <input type="text" name="title" required=""   class="form-control" id="title" placeholder="Title">
          </div></div></div>
 
- <input type="hidden" name="date" value="<?php echo date('d-M-Y'); ?>">
+ <input type="hidden" name="date" value="<?php echo date('d F, Y'); ?>">
         <div class="col-md-12 col-xs-12">
       <div class="form-group">
       <label for="content">Content</label>

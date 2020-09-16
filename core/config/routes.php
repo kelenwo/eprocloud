@@ -49,11 +49,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['(:any)'] = 'aksu/$1/$2/$3';
+$route['(:any)'] = 'home/$1/$2/$3';
 $route['archive/openarchive/(:any)'] = 'aksu/archive/openarchive/$1/$2';
 $route['publications/viewarticle/(:any)/(:any)'] = 'aksu/viewarticle/openarchive/$1/$2';
 $route['viewpdf/articles/publications/d/(:any)'] = 'aksu/viewpdf/articles/publications/d/$1/$2';
-$route['manage'] = 'ucp/manage';
-$route['default_controller'] = 'aksu';
+$route['dashboard'] = 'dashboard/home';
+$route['default_controller'] = 'home';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

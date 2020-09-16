@@ -49,49 +49,77 @@
 <td><?php echo $req['event_date']; ?></td>
 <td><?php echo $req['type']; ?></td>
 <td class="actions">
-  <a href="#edit_news_<?php echo $req['id'];?>" data-toggle="modal">Edit&nbsp;<i class="fas fa-edit"></i></a>&nbsp;|&nbsp;
-  <a id="del-news-<?php echo $req['id'];?>"><b style="color:red;">Delete&nbsp;<i class="far fa-trash-alt"></i></a></b>
-  <form id="del_news-<?php echo $req['id'];?>">
+  <a href="#edit_events_<?php echo $req['id'];?>" data-toggle="modal">Edit&nbsp;<i class="fas fa-edit"></i></a>&nbsp;|&nbsp;
+  <a id="del-events-<?php echo $req['id'];?>"><b style="color:red;">Delete&nbsp;<i class="far fa-trash-alt"></i></a></b>
+  <form id="del_events-<?php echo $req['id'];?>">
   <input type="hidden" name="id" value="<?php echo $req['id'];?>">
-  <input type="hidden" name="type" value="news">
+  <input type="hidden" name="type" value="event">
 </form>
 </td>
 </tr>
-<div class="modal fade" id="edit_news_<?php echo $req['id'];?>" tabindex="-1" role="dialog">
+<div class="modal fade" id="edit_events_<?php echo $req['id'];?>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
 <div class="modal-dialog modal-dialog-centered" role="document">
  <div class="modal-content">
  <div class="modal-header">
-<h3 class="modal-title text-center">Edit Issue</h3>
+<h3 class="modal-title text-center">Edit Event</h3>
  </div>
  <div class="modal-body">
-<form name="edit_news-<?php echo $req['id'];?>" method="post" id="edit_news-<?php echo $req['id'];?>">
+<form name="edit_events-<?php echo $req['id'];?>" method="post" id="edit_events-<?php echo $req['id'];?>">
  <div class="form-group">
 <label for="title">Title</label>
 <div class="input-group">
  <span class="input-group-addon">
  <i class="fa fa-user"></i>
  </span>
-<input type="text" name="title" value="<?php echo $req['title'];?>" required class="form-control" id="title-<?php echo $req["id"];?>">
+<input type="text" name="event_title" value="<?php echo $req['event_title'];?>" required class="form-control" id="title-<?php echo $req["id"];?>">
 <input type="hidden" name="id" value="<?php echo $req['id'];?>">
 </div></div>
 
- <div class="form-group">
- <label for="content">Content</label>
- <div class="input-group">
-   <span class="input-group-addon">
-   <i class="fa fa-user"></i>
-   </span>
-   <textarea class="form-control" name="content"><?php echo $req['content'];?></textarea>
- </div></div>
- <div class="form-group" id="editnewsmsg-<?php echo $req['id'];?>"></div>
- </div>
- <label class="toggle">
-       <input type="checkbox" name="status" value="Active" id="status">
-         <span class="handle"></span>
-       </label> Disable/Enable
+<div class="form-group">
+<label for="Type">Type</label>
+<div class="input-group">
+<span class="input-group-addon">
+<i class="fas fa-folder-open"></i>
+</span>
+<select class="form-control" name="type" id="type-select">
+<<option value="contract" <?php if($req['type']=="contract") {echo 'selected';}?>>Contract</option>
+<option value="bid opening" <?php if($req['type']=="bid opening") {echo 'selected';}?>>Bid opening</option>
+<option value="bid closing" <?php if($req['type']=="bid closing") {echo 'selected';}?>>Bid closing</option>
+<option value="contract expiry" <?php if($req['type']=="contract expiry") {echo 'selected';}?>>Contract Expiry</option>
+<option value="billing" <?php if($req['type']=="billing") {echo 'selected';}?>>Billing</option>
+<option value="others" <?php if($req['type']=="others") {echo 'selected';}?>>Others</option>
+   </select>
+</div></div>
+
+<div class="form-group">
+<label for="Bid Closing date">Event Date</label>
+<div class="input-group">
+<span class="input-group-addon">
+<i class="fas fa-calendar-alt"></i>
+</span>
+<input type="date" name="event_date" required="" value="<?php echo $req['event_date'];?>"  class="form-control" id="date" placeholder="Event Date">
+</div></div>
+
+<div class="form-group">
+<label for="event time">Event Time</label>
+<div class="input-group">
+<span class="input-group-addon">
+<i class="far fa-clock"></i>
+</span>
+<input type="time" name="event_time" required="" value="<?php echo $req['event_time'];?>"  class="form-control" id="event_time" placeholder="Event time">
+</div></div>
+
+  <div class="form-group">
+  <label for="Description">Description</label>
+  <div class="input-group">
+    <span class="input-group-addon">
+    <i class="far fa-newspaper"></i>
+    </span>
+    <textarea class="form-control" name="description"><?php echo $req['description'];?></textarea>
+  </div></div>
  <div class="modal-footer">
 <button type="button" id="cancel" class="btn btn-secondary" data-dismiss="modal" >CANCEL</button>
-<button type="button" id="save-news-edit-<?php echo $req['id'];?>" class="btn btn-primary">SUBMIT <i id="loadingnews-<?php echo $req['id'];?>" class="fa fa-gear fa-spin"></i></button>
+<button type="button" id="save-events-edit-<?php echo $req['id'];?>" class="btn btn-primary">SUBMIT <i id="loadingevents-<?php echo $req['id'];?>" class="fas fa-cog fa-spin"></i></button>
  </div>
  </form>
 </div>
@@ -100,16 +128,16 @@
 <script>
 $(document).ready(function() {
 
-//delete article
-$('#loadingnews-<?php echo $req["id"];?>').hide();
-$("#del-news-<?php echo $req['id'];?>").click(function(){
+//delete
+$('#loadingevents-<?php echo $req["id"];?>').hide();
+$("#del-events-<?php echo $req['id'];?>").click(function(){
   if (confirm("Do you want to delete?")){
     $.ajax({
       url:'<?php echo base_url()."ucp/manage/delete_item";?>',
       type: "POST",
-      data: $('#del_news-<?php echo $req["id"];?>').serialize(),
+      data: $('#del_events-<?php echo $req["id"];?>').serialize(),
       success:function(data) {
-if(data=='true') {
+if(data='true') {
 window.location.href = "<?php echo $_SERVER['PHP_SELF'];?>";
 } else {
   alert(data);
@@ -120,20 +148,20 @@ window.location.href = "<?php echo $_SERVER['PHP_SELF'];?>";
     return false;
   }
 });
-//Save Issue edit
-$("#save-news-edit-<?php echo $req['id'];?>").click(function() {
-$("#loadingnews-<?php echo $req['id'];?>").show();
+
+$("#save-events-edit-<?php echo $req['id'];?>").click(function() {
+$("#loadingevents-<?php echo $req['id'];?>").show();
 $.ajax({
-  url:'<?php echo base_url()."ucp/manage/update_news";?>',
+  url:'<?php echo base_url()."ucp/manage/update_events";?>',
   type: "POST",
-  data: $("#edit_news-<?php echo $req['id'];?>").serialize(),
+  data: $("#edit_events-<?php echo $req['id'];?>").serialize(),
   success:function(data) {
-$("#loadingnews-<?php echo $req['id'];?>").hide();
-  if(data=="true") {
+$("#loadingevents-<?php echo $req['id'];?>").hide();
+  if(data="true") {
 alert('Record has been saved');
 window.location.href = "<?php echo $_SERVER['PHP_SELF'];?>";
   } else {
-$('#editnewsmsg-<?php echo $req["id"];?>').html(data);
+$('#editeventsmsg-<?php echo $req["id"];?>').html(data);
   }
   }
 });
@@ -173,7 +201,12 @@ endif;?>
          </span>
          <select class="form-control" name="type" id="type-select">
            <option>-Select Type</option>
-           <option value="bidding">Contract bidding</option>
+           <option value="contract">Contract</option>
+           <option value="bid opening">Bid opening</option>
+           <option value="bid closing">Bid closing</option>
+           <option value="contract expiry">Contract Expiry</option>
+           <option value="billing">Billing</option>
+           <option value="others">Others</option>
                 </select>
        </div></div></div>
 
@@ -195,13 +228,15 @@ endif;?>
          <input type="time" name="event_time" required=""   class="form-control" id="event_time" placeholder="Event time">
          </div></div></div>
 
-          <input type="hidden" name="date" value="<?php echo date('d-M-Y'); ?>">
+          <input type="hidden" name="date" value="<?php echo date('d F, Y'); ?>">
+          <input type="hidden" name="owner" value="ePROCLOUD">
+          <input type="hidden" name="owner_email" value="admin@eprocloud.com">
                  <div class="col-md-12 col-xs-12">
                <div class="form-group">
                <label for="Description">Description</label>
                <div class="input-group">
                  <span class="input-group-addon">
-                 <i class="far fa-newspaper"></i>
+                 <i class="far fa-eventspaper"></i>
                  </span>
                  <textarea class="form-control" name="description"></textarea>
                </div></div></div>
@@ -209,7 +244,7 @@ endif;?>
         <div class="col-md-12 col-xs-12">
       <div class="form-group">
               <button class="btn btn-primary" id="submit" type="button">Submit
-          <i class="fa fa-gear fa-spin" id="loading"></i>
+          <i class="fas fa-cog fa-spin" id="loading"></i>
         </button>
       </div></div>
           <div style="color:red;" class="form-group" id="msg"></div>
@@ -232,7 +267,6 @@ $(document).ready(function() {
 
 //Hide all loading icons
 $('#loading').hide();
-//get Issue list from db
 
 $('#submit').on('click',function() {
 $('#loading').show();
@@ -242,7 +276,7 @@ $.ajax({
   data: $('#add_event').serialize(),
   success:function(data) {
 $('#loading').hide();
-if(data=="true") {
+if(data="true") {
 alert('Event has been published successfully');
 window.location.href = "<?php echo $_SERVER['PHP_SELF'];?>";
 } else {

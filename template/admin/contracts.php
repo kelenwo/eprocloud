@@ -1,3 +1,9 @@
+<script src="<?php echo base_url();?>template/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="<?php echo base_url();?>template/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="<?php echo base_url();?>template/assets/js/demo/datatables-demo.js"></script>
+
 <div class="col-xs-12 col-sm-9 content">
   <div class="panel panel-default">
 <div class="panel-heading">
@@ -29,8 +35,8 @@
 <!-- View contracts Start -->
  <div class="tab-pane fade  active in" id="tab1">
  <div class="col-md-12">
-  <div class="panel">
-  <table class="table table-hover table-responsive custom-tbl">
+  <div class="panel  table-responsive">
+  <table class="table table-bordered custom-tbl" id="dataTable" cellspacing="0">
 <thead>
 <tr>
   <th>#</th>
@@ -49,7 +55,7 @@
 <?php  foreach($contract as $req): ?>
 <tr>
 <td><?php echo $i++.'.';?>
-<td><?php echo $req['contract_title']; ?></td>
+<td><a href="#viewcontract-<?php echo $req['id'];?>" data-toggle="modal"><?php echo $req['contract_title']; ?></a></td>
 <td><?php echo $req['bid_number']; ?></td>
 <td><?php echo $req['location']; ?></td>
   <td><?php echo $req['bid_opening_date']; ?></td>
@@ -59,10 +65,84 @@
   <a id="del-contract-<?php echo $req['id'];?>"><b style="color:red;">Delete&nbsp;<i class="far fa-trash-alt"></i></a></b>
   <form id="del_contract-<?php echo $req['id'];?>">
   <input type="hidden" name="id" value="<?php echo $req['id'];?>">
-  <input type="hidden" name="type" value="contract">
+  <input type="hidden" name="type" value="contract_bidding">
 </form>
 </td>
 </tr>
+
+<!-- List contract modal -->
+<div class="modal fade" id="viewcontract-<?php echo $req['id'];?>" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+
+    <div class="modal-content" style="font-size: 1.5em;">
+      <div class="modal-header inline">
+      <div class="text-center mt-3">
+<span class="fa-stack text-main fa-2x" style="margin-top: -0.7em; font-size: 1.1em !important;">
+  <i class="fas fa-circle fa-stack-2x"></i>
+  <i class="fas fa-newspaper fa-stack-1x fa-inverse"></i>
+</span> <h3 class="d-inline">View Contract</h3>
+</div>
+</div>
+      <div class="modal-body">
+<!-- General Information start-->
+<div class="col-md-12">
+<span class="fa-stack text-success fa-2x" style="font-size: 0.9em !important;">
+<i class="fas fa-circle fa-stack-2x"></i>
+<i class="far fa-copy fa-stack-1x fa-inverse"></i>
+</span> <h5 class="d-inline">General Information</h5>
+</div>
+<div class="col-sm-11 col-md-11 card  bg-light ml-4">
+<div class="card-body" style="margin: -5px!important;">
+<div class="row">
+  <div class="col-sm-6 col-md-6 mt-3">
+<div class="text-sm text-primary ml-3 text-capitalize"><small class="text-success">Contract Title:</small>
+<br>
+<h6><?php echo $req['contract_title'];?></h6></div>
+<br>
+          <div class="ml-3">
+            <div class="text-sm text-primary text-capitalize"><small class="text-success">Contract Number:</small>
+            <br>
+          <h6><?php echo $req['bid_number'];?></h6></div>
+          <br>
+          <div class="text-sm text-primary text-capitalize"><small class="text-success">Category:</small>
+          <br>
+        <h6><?php echo $req['category'];?></h6></div>
+
+      </div></div>
+        <div class="col-sm-5 col-md-5 ml-4 mt-3">
+          <div class="text-sm text-primary text-capitalize"><small class="text-success">Bid Opening Date:</small>
+          <br>
+        <h6><?php echo $req['bid_opening_date'];?></h6></div>
+        <br>
+        <div class="text-sm text-primary text-capitalize"><small class="text-success">Bid closing Date:</small>
+        <br>
+      <h6><?php echo $req['bid_closing_date'];?></h6></div>
+      <br>
+      <div class="text-sm text-primary text-capitalize"><small class="text-success">Location:</small>
+      <br>
+    <h6><?php echo $req['location'];?></h6></div>
+
+        </div>
+      </div>
+    </div>
+      </div>
+<!-- General Information end -->
+
+    </div>
+
+      <div class="modal-footer mt-2">
+        <div class="form-group text-center mt-5">
+          <a class="btn pl-5 pr-5 btn-success" href="#edit_contract_<?php echo $req['id'];?>" data-toggle="modal"><i class="far fa-edit"></i> Edit</a>
+    <button class="btn pl-5 pr-5 btn-danger" id="del-contract-<?php echo $req['id'];?>"><i class="fas fa-trash-alt"></i> Delete</button>
+
+          <button class="btn pl-5 pr-5 btn-info" type="button" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i> &nbsp;Close</button>
+       </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--List Contract modal End -->
 <!--edit contract modal -->
 <div class="modal fade" id="edit_contract_<?php echo $req['id'];?>" tabindex="-1" role="dialog">
 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -83,15 +163,6 @@
 <input type="hidden" name="id" value="<?php echo $req['id'];?>">
 </div></div>
 
-<div class=""> <div class="form-group">
-<label for="owner">Contract Owner</label>
-<div class="input-group">
-<span class="input-group-addon">
-<i class="fa fa-suitcase"></i>
-</span>
-<input type="text" name="owner" value="<?php echo $req['owner'];?>"   class="form-control" id="owner" placeholder="Contract Owner">
-</div></div></div>
-
 <div class="">
 <div class="form-group">
 <label for="Category">Category</label>
@@ -101,8 +172,11 @@
 </span>
 <select class="form-control" name="category" id="category-select">
 <option>-Select Category</option>
-<option value="civil">Civil</option>
-<option value="Electrical">Electrical</option>
+<option value="Civil Works" <?php if($req['category']=="Civil Works") {echo 'selected';}?>>Civil Works</option>
+<option value="Electrical Works" <?php if($req['category']=="Electrical Works") {echo 'selected';}?>>Electrical Works</option>
+<option value="Plumbing and fitting" <?php if($req['category']=="Plumbing and fitting") {echo 'selected';}?>>Plumbing and fitting</option>
+<option value="Welding" <?php if($req['category']=="Welding") {echo 'selected';}?>>Welding</option>
+<option value="Others" <?php if($req['category']=="others") {echo 'selected';}?>>Others</option>
     </select>
 </div></div></div>
 
@@ -235,7 +309,7 @@ endif;?>
      <form id="add_contract">
        <div class="container-fluid">
 
-             <div class="col-md-6 col-xs-6">
+             <div class="col-md-12 col-xs-12">
            <div class="form-group">
            <label for="Title">Title</label>
            <div class="input-group">
@@ -244,15 +318,6 @@ endif;?>
              </span>
            <input type="text" name="contract_title" required=""   class="form-control" id="title" placeholder="Contract Title">
          </div></div></div>
-
-         <div class="col-md-6 col-xs-6"> <div class="form-group">
-      <label for="owner">Contract Owner</label>
-      <div class="input-group">
-        <span class="input-group-addon">
-        <i class="fa fa-suitcase"></i>
-        </span>
-      <input type="text" name="owner" required=""   class="form-control" id="owner" placeholder="Contract Owner">
-    </div></div></div>
 
       <div class="col-md-4 col-xs-6">
     <div class="form-group">
@@ -263,8 +328,11 @@ endif;?>
       </span>
       <select class="form-control" name="category" id="category-select">
         <option>-Select Category</option>
-        <option value="civil">Civil</option>
-        <option value="Electrical">Electrical</option>
+        <option value="Civil Works">Civil Works</option>
+        <option value="Electrical Works">Electrical Works</option>
+        <option value="Plumbing and fitting">Plumbing and fitting</option>
+        <option value="Welding">Welding</option>
+        <option value="Others">Others</option>
              </select>
     </div></div></div>
 
@@ -295,7 +363,8 @@ endif;?>
 <input type="date" name="bid_closing_date" required=""   class="form-control" id="bid_closing_date" placeholder="Bid Closing Date">
 </div></div></div>
 
- <input type="hidden" name="date" value="<?php echo date('d-M-Y'); ?>">
+ <input type="hidden" name="date" value="<?php echo date('d F, Y'); ?>">
+  <input type="hidden" name="owner" value="ePROCLOUD">
         <div class="col-md-12 col-xs-12">
       <div class="form-group">
       <label for="Description">Description</label>
@@ -333,41 +402,7 @@ endif;?>
 $(document).ready(function() {
 
 //Hide all loading icons
-$('#loading-issue').hide();
-$('#loading-file').hide();
 $('#loading').hide();
-$('#loading-vol').hide();
-//$('#submit').attr('disabled','disabled');
-//$('#success').hide();
-
-//get Issue list from db
-$('#archive-select').on('change',function() {
-$('#loading-vol').show();
-$.ajax({
-  url:'<?php echo base_url()."ucp/manage/get_volume";?>',
-  type: "POST",
-  data: $('#add_contract').serialize(),
-  success:function(data) {
-$('#loading-vol').hide();
-$('#volume-select').html(data);
-  }
-});
-});
-
-//get Issue list from db
-$('#volume-select').on('change',function() {
-$('#loading-issue').show();
-$.ajax({
-  url:'<?php echo base_url()."ucp/manage/get_issue";?>',
-  type: "POST",
-  data: $('#add_contract').serialize(),
-  success:function(data) {
-$('#loading-issue').hide();
-$('#getissue').html(data);
-  }
-});
-});
-
 
 $('#submit').on('click',function() {
 $('#loading').show();

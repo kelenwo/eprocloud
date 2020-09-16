@@ -19,6 +19,9 @@
 	================================================== -->
 
 	<!-- Bootstrap -->
+	<script src="<?php echo base_url();?>template/vendor/jquery/jquery.min.js"></script>
+	<script src="<?php echo base_url();?>template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 	<link rel="stylesheet" href="<?php echo base_url();?>template/home/css/bootstrap.min.css">
 	<!-- Template styles-->
 	<link rel="stylesheet" href="<?php echo base_url();?>template/home/css/style.css">
@@ -109,15 +112,15 @@
 										</li>
 
 										<li class="dropdown">
-											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Pricing</a>
+											<a href="<?php echo base_url();?>pricing" class="dropdown-toggle" data-toggle="dropdown">Pricing</a>
 										</li>
 
 										<li class="dropdown">
 											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Products <i
 													class="fa fa-angle-down"></i></a>
 											<ul class="dropdown-menu" role="menu">
-												<li><a href="projects.html">Contract Management</a></li>
-												<li><a href="projects-single.html">Contract Bidding</a></li>
+												<li><a href="<?php echo base_url();?>contracts/list">Contract Management</a></li>
+												<li><a href="<?php echo base_url();?>bidding/bid">Contract Bidding</a></li>
 											</ul>
 										</li>
 
@@ -125,15 +128,14 @@
 											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Help Center   <i
 													class="fa fa-angle-down"></i></a>
 											<ul class="dropdown-menu" role="menu">
-												<li><a href="services.html">FAQ</a></li>
-												<li><a href="service-single.html">Testimonials</a></li>
+												<li><a href="<?php echo base_url();?>contact">Contacts Us </a></li>
 											</ul>
 										</li>
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle">About Us</a>
                     </li>
 										<li class="dropdown">
-											<a href="#" class="dropdown-toggle">Sign In</a>
+											<a href="<?php echo base_url();?>ucp/login" class="dropdown-toggle">Sign In</a>
 										</li>
 									</ul>
 									<!--/ Nav ul end -->

@@ -22,35 +22,47 @@
                     <div class="card-body">
                       <div class="row no-gutters ">
                         <div class="col mr-2">
-                          <table class="table table-responsive">
+                          <table class="table " width="90%">
                             <tbody>
                               <tr>
-                                <td class="table-dark">Title</td>
-                                <td>{contract_title}</td>
+                                <td class="table-dark" width="20%">Title</td>
+                                <td width="80%">{contract_title}</td>
                               </tr>
                               <tr>
-                                <td class="table-dark">Description</td>
-                                <td>{description}</td>
+                                <td class="table-dark" width="20%">Contract Number</td>
+                                <td>{bid_number}</td>
                               </tr>
                               <tr>
-                                <td class="table-dark">Category</td>
-                                <td>{category}</td>
+                                <td class="table-dark" width="20%">Description</td>
+                                <td width="80%">{description}</td>
                               </tr>
                               <tr>
-                                <td class="table-dark">Location</td>
+                                <td class="table-dark" width="20%">Category</td>
+                                <td width="80%">{category}</td>
+                              </tr>
+                              <tr>
+                                <td class="table-dark" width="20%">Location</td>
                                 <td>{location}</td>
                               </tr>
                               <tr>
-                                <td class="table-dark">Bid Opening date</td>
+                                <td class="table-dark" width="20%">Contract Owner</td>
+                                <td>{owner}</td>
+                              </tr>
+                              <tr>
+                                <td class="table-dark" width="20%">Bid Opening date</td>
                                 <td><?php echo date("d F Y", strtotime($bid_opening_date));?></td>
                               </tr>
                               <tr>
-                                <td class="table-dark">Bid Closing date</td>
+                                <td class="table-dark" width="20%">Bid Closing date</td>
                                 <td><?php echo date("d F Y", strtotime($bid_closing_date));?></td>
                               </tr>
                             </tbody>
                           </table>
+      <?php if(strtotime($bid_opening_date) <= strtotime(date('d F, Y')) && strtotime($bid_closing_date) > strtotime(date('d F, Y'))):?>
 <button class="btn btn-success btn-lg btn-block" data-toggle="modal"  data-target="#bidcontractconfirm">Place Bid</button>
+<?php else: ?>
+  <h4 class="text-center text-danger">Bidding is closed or has not yet started!!</h4>
+<?php endif;?>
                         </div>
 
                       </div>
@@ -108,7 +120,8 @@
         <input type="hidden" name="contract_title" value="{contract_title}">
         <input type="hidden" name="bid_number" value="{bid_number}">
         <input type="hidden" name="category" value="{category}">
-        <input type="hidden" name="bid_by" value="kelvin">
+        <input type="hidden" name="bid_by" value="{name}">
+        <input type="hidden" name="bid_by_email" value="{email}">
         <input type="hidden" name="owner" value="{owner}">
         <input type="hidden" name="location" value="{location}">
         <input type="hidden" name="bid_date" value="<?php echo date('d-m-Y');?>">

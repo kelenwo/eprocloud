@@ -20,19 +20,23 @@
     <!-- Card Content - Collapse -->
   <div class="collapse show" id="collapseCardExample" style="">
       <div class="card-body">
-        <div class="form-group">
+        <form id="add_contract"><div class="form-group">
           <label>Contract Title <small style="color: red">*</small></label>
-          <input type="text" class="form-control form-control-user" placeholder="Contract Title">
+          <input type="text" name="contract_title" class="form-control form-control-user" placeholder="Contract Title">
         </div>
         <div class="form-group">
           <label>Contract Number <small style="color: red">*</small></label>
-          <input type="text" class="form-control form-control-user" placeholder="Contract Number">
+          <input type="text" name="contract_number" class="form-control form-control-user" placeholder="Contract Number">
         </div>
         <div class="form-group">
           <label>Category <small style="color: red">*</small></label>
-          <select name="status" class="form-control">
-          <option value="Active">Category</option>
-          <option value="inactive">Inactive</option>
+          <select name="category" class="form-control">
+            <option>Category</option>
+            <option value="Civil Works">Civil Works</option>
+            <option value="Electrical Works">Electrical Works</option>
+            <option value="Plumbing and fitting">Plumbing and fitting</option>
+            <option value="Welding">Welding</option>
+            <option value="Others">Others</option>
         </select>
                 </div>
         <div class="form-group">
@@ -40,6 +44,7 @@
           <select name="status" class="form-control">
           <option value="Active">Active</option>
           <option value="inactive">Inactive</option>
+          <option value="Active">Completed</option>
         </select>
                 </div>
       </div>
@@ -58,19 +63,19 @@
       <div class="card-body">
         <div class="form-group">
           <label>Start Date <small style="color: red">*</small></label>
-          <input type="date" class="form-control form-control-user" placeholder="Contract Title">
+          <input type="date" name="start_date" class="form-control form-control-user">
         </div>
         <div class="form-group">
           <label>End Date <small style="color: red">*</small></label>
-          <input type="date" class="form-control form-control-user" placeholder="Contract Number">
+          <input type="date" name="end_date" class="form-control form-control-user">
         </div>
         <div class="form-group">
           <label>Contract has renewal? <small style="color: red">*</small></label>
-          <input type="checkbox" class="" style="height:1.1rem;width:1.1rem;background-color:#32b449;color:#fff">
+          <input type="checkbox" id="has_renewal" name="has_renewal" class="" value="yes" style="height:1.1rem;width:1.1rem;background-color:#32b449;color:#fff">
         </div>
         <div class="form-group">
           <label>Renewal Period</label>
-          <input type="date" class="form-control form-control-user" placeholder="Contract Number">
+          <input type="date" id="renewal_period" name="renewal_period" class="form-control form-control-user" disabled>
         </div>
 </div>
                 </div>
@@ -90,40 +95,43 @@
     <div class="card-body">
       <div class="form-group">
         <label>Billing Cycle <small style="color: red">*</small></label>
-        <select name="status" class="form-control">
-        <option value="Active">One Time</option>
-        <option value="inactive">Monthly</option>
-        <option value="inactive">Quaterly</option>
-        <option value="inactive">Yearly</option>
+        <select name="billing_cycle" class="form-control">
+          <option value="One Time">One Time</option>
+          <option value="Monthly">Monthly</option>
+          <option value="Quaterly">Quaterly</option>
+          <option value="Yearly">Yearly</option>
       </select>
     </div>
     <div class="form-group">
       <label>Billing Amount <small style="color: red">*</small></label>
-      <input type="number" class="form-control form-control-user" placeholder="Billing Amount (NGN)">
+      <input type="number" name="billing_amount" class="form-control form-control-user" placeholder="Billing Amount (NGN)">
     </div>
 
       <div class="form-group">
         <label>First Billing Date <small style="color: red">*</small></label>
-        <input type="date" class="form-control form-control-user">
+        <input type="date" name="first_billing_date" class="form-control form-control-user">
       </div>
       <div class="form-group">
         <label>Last Billing Date <small style="color: red">*</small></label>
-        <input type="date" class="form-control form-control-user">
+        <input type="date" name="last_billing_date" class="form-control form-control-user">
       </div>
 
       <div class="form-group">
         <label>Description</label>
-        <input type="text" class="form-control form-control-user" placeholder="Description">
+        <input type="text" name="description" class="form-control form-control-user" placeholder="Description">
       </div>
 </div>
               </div>
     </div>
         </div>
         <div class="form-group col-lg-10">
-          <button class="btn btn-success btn-block">SUBMIT</button>
+          <button class="btn btn-success btn-block" type="button" id="add">SUBMIT <i id="loading" class="fas fa-cog fa-spin"></i></button>
         </div>
       </div>
-
+      <input type="hidden" name="contract_owner" value="{name}">
+      <input type="hidden" name="owner_email" value="{email}">
+      <input type="hidden" name="date" value="<?php echo date("d-M-Y");?>">
+</form>
         </div>
         <!-- /.container-fluid -->
 
@@ -142,26 +150,39 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
+  <script>
+  $(document).ready(function() {
 
+  //Hide all loading icons
+  $('#loading').hide();
 
+  $('#has_renewal').click(function() {
+    if ($(this).is(':checked')) {
+  $('#renewal_period').removeAttr('disabled'); //enable input
+  } else {
+  $('#renewal_period').attr('disabled', true); //disable input
+         }
+  });
+
+  $('#add').on('click',function() {
+  $('#loading').show();
+  $.ajax({
+    url:'<?php echo base_url()."contracts/publish_contract";?>',
+    type: "POST",
+    data: $('#add_contract').serialize(),
+    success:function(data) {
+  $('#loading').hide();
+  if(data='true') {
+  alert('Contract has been published successfully');
+  window.location.href = "<?php echo base_url();?>contracts/list";
+} else {
+    alert(data);
+  }
+    }
+  })
+  });
+  });
+  </script>
 
 </body>
 

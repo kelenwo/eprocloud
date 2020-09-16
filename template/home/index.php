@@ -27,8 +27,8 @@
 							<br>make bids and own a contract with our</p>
 							<h2 class="slide-title animated4">Easy Contract Bidding</h2>
 							<p>
-								<a href="services.html" class="slider btn btn-primary">Sign up now</a>
-								<a href="contact.html" class="slider btn btn-primary border">Contact Us</a>
+								<a href="<?php echo base_url();?>ucp/login/signup" class="slider btn btn-primary">Sign up now</a>
+								<a href="<?php echo base_url();?>contact" class="slider btn btn-primary border">Contact Us</a>
 							</p>
 						</div>
 					</div>
@@ -56,7 +56,7 @@
 						</div><!-- Col end -->
 						<div class="col-md-2">
 							<div class="call-to-action-btn">
-								<a class="btn btn-dark" href="#">Sign In</a>
+								<a class="btn btn-dark" href="<?php echo base_url();?>ucp/login">Sign In</a>
 							</div>
 						</div><!-- col end -->
 					</div><!-- row end -->

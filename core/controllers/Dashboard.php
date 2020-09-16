@@ -1,53 +1,34 @@
 <?php
 Class Dashboard Extends CI_Controller {
 
+  public function __construct()  {
+          parent::__construct();
+if(empty($this->session->email)) {
+  header('Location:'.base_url().'ucp/login');
+}
+}
   public function index() {
+    $data = $this->session->userdata();
     $data['title'] = 'Dashboard - Home';
+    $data['events'] = $this->main_model->get_events_where();
+    $data['events_board'] = $this->main_model->get_events_limit();
+    $data['contracts_new'] = $this->main_model->get_contracts_new();
+    $data['contracts_count'] = $this->main_model->count_contracts();
+    $data['contracts_finished'] = $this->main_model->count_contracts_finished();
+    $data['contracts_pending_count'] = $this->main_model->count_contracts_pending();
+    $data['contracts_approved_count'] = $this->main_model->count_contracts_approved();
+    $data['contracts_active_count'] = $this->main_model->count_contracts_active();
     $this->parser->parse('head',$data);
     $this->parser->parse('index',$data);
     $this->load->view('end');
   }
-  public function add_contract() {
-    $data['title'] = 'Dashboard - Home';
+
+  public function profile() {
+    $data = get_object_vars($this->user_model->get_biodata());
+    $data['title'] = 'Profile -'.$this->session->name;
     $this->parser->parse('head',$data);
-    $this->parser->parse('add_contract',$data);
+    $this->parser->parse('profile',$data);
     $this->load->view('end');
-  }
-  public function list_contracts() {
-    $data['title'] = 'Dashboard - List Contracts';
-    $this->parser->parse('head',$data);
-    $this->parser->parse('list_contracts',$data);
-    $this->load->view('end');
-  }
-  public function current_bids() {
-    $data['contracts'] = $this->main_model->get_contracts();
-    $data['title'] = 'Dashboard - Current Bids ';
-    $this->parser->parse('head',$data);
-    $this->parser->parse('current_bids',$data);
-    $this->load->view('end');
-  }
-  public function pending_bids() {
-    $data['title'] = 'Dashboard - Pending Bids ';
-    $this->parser->parse('head',$data);
-    $this->parser->parse('pending_bids',$data);
-    $this->load->view('end');
-  }
-  public function bid_contract() {
-    $data['contracts'] = ucfirst($this->main_model->get_contracts());
-    $data['title'] = 'Dashboard - Bid Contract ';
-    $this->parser->parse('head',$data);
-    $this->parser->parse('bid_contract',$data);
-    $this->load->view('end');
-  }
-  public function contract_details() {
-    $data['title'] = 'Dashboard - Pending Bids ';
-    $this->parser->parse('head',$data);
-    $this->parser->parse('contract_details',$data);
-    $this->load->view('end');
-  }
-  public function login() {
-    $data['title'] = 'Dashboard - Login';
-    $this->parser->parse('login',$data);
   }
 }
  ?>

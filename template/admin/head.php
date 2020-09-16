@@ -14,7 +14,7 @@
   <!-- Google	Fonts -->
     <link href="<?php echo base_url();?>template/admin/assets/css/fonts.css" rel="stylesheet" />
 	    <!--  Jquery Core Script -->
-    <script src="<?php echo base_url();?>template/admin/assets/jquery.min.js"></script>
+    <script src="<?php echo base_url();?>template/admin/assets/js/jquery.min.js"></script>
     <!--  Core Bootstrap Script -->
     <script src="<?php echo base_url();?>template/admin/assets/js/bootstrap.js"></script>
     <!--  Flexslider Scripts -->
@@ -25,6 +25,8 @@
     <script src="<?php echo base_url();?>template/admin/assets/js/jquery.easing.min.js"></script>
     <!--  Custom Scripts -->
          <script src="<?php echo base_url();?>template/admin/assets/js/custom.js"></script>
+         <link href="<?php echo base_url();?>template/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
     <!-- <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'> -->
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
     <!-- [if lt IE 9] -->
@@ -46,14 +48,15 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a href="#" class="navbar-brand"><h4>Admin Panel</h4></a>
+            <a href="#" class="navbar-brand"><h4>ePROCLOUD - Admin Panel</h4></a>
           </div>
 
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div id="bs-content-row-navbar-collapse-5" class="collapse navbar-collapse ">
             <ul class="nav navbar-nav navbar-right">
-              <li class="active"><a href="getting-started.html"><h5>Logout</h5></a></li>
-              <li class="disabled"><a href="index.html"><h4>Admin</h4></a></li>
+              <li class="disabled"><a href="index.html"><h4>{name}</h4></a></li>
+              <li class="active"><a href="<?php echo base_url();?>ucp/login/logout"><h5>Logout</h5></a></li>
+
               <!-- <li class="disabled"><a href="#">Link</a></li> -->
             </ul>
 
@@ -81,9 +84,9 @@
             </i>News Items</a></li>
             <li><a class="list-group-item" id="settings-tab" href="<?php echo base_url();?>ucp/manage/bids">
               <i class="fa fa-list-alt"></i> Bids</a></li>
-                <li><a class="list-group-item" id="portal-tab" href="<?php echo base_url();?>ucp/manage/portal"><i class="fa fa-money"></i>
+                <li><a class="list-group-item" id="portal-tab" ><i class="fa fa-money"></i>
                   Payments</a></li>
-                  <li><a class="list-group-item" id="settings-tab" href="<?php echo base_url();?>ucp/manage/settings">
+                  <li><a class="list-group-item" id="settings-tab" >
                     <i class="fa fa-cogs"></i> Settings</a></li>
 
               </ul>

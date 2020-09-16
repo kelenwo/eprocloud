@@ -104,8 +104,7 @@
 	success:function(data){
 	$('#loading').hide();
 if(data=='true') {
-	alert('Login Successfully');
-	window.location.href = "<?php echo base_url()."ucp/manage";?>";
+	window.history.go(-1);
 } else {
 	alert(data);
 }

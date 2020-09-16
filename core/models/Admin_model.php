@@ -11,6 +11,18 @@ public function get_events() {
   }
 }
 
+public function get_events_limit() {
+  $this->db->where('owner','ePROCLOUD');
+  $this->db->limit(3);
+  $this->db->order_by('event_date', 'DESC');
+  $query = $this->db->get('events');
+  if($query->num_rows() < 0) {
+    return false;
+  } else {
+      return $query->result_array();
+  }
+}
+
 public function save_event() {
   $query = $this->db->insert('events', $this->input->post());
   if($query) {
@@ -20,83 +32,21 @@ public function save_event() {
   }
 }
 
+public function update_event() {
+  $this->db->where('id', $this->input->post('id'));
+  $query = $this->db->update('events', $this->input->post());
+  if($query) {
+    return true;
+  } else {
+    return mysqli_error();
+  }
+}
+
 public function get_biodata() {
-//Requests student data from database, based on the logged in user
 $this->db->select('*');
 $this->db->where('id',$this->input->post('id'));
 $query = $this->db->get('users');
 return $query->row();
-}
-public function get_submissions() {
-$query =  $this->db->get('submissions');
-if($query->num_rows() < 0) {
-  return false;
-} else {
-    return $query->result_array();
-}
-}
-
-public function get_articles() {
-$query =  $this->db->get('articles');
-if($query->num_rows() < 0) {
-  return false;
-} else {
-    return $query->result_array();
-}
-}
-
-public function get_issue_link($links0,$links1,$links2) {
-$this->db->where('archive',$links0);
-$this->db->where('volume',$links1);
-$this->db->where('issue',$links2);
-$query =  $this->db->get('articles');
-if($query->num_rows() < 0) {
-  return mysqli_error();
-} else {
-    return $query->result_array();
-}
-}
-
-public function get_article_link($links0,$links1,$links2,$id) {
-$this->db->where('archive',$links0);
-$this->db->where('volume',$links1);
-$this->db->where('issue',$links2);
-$this->db->where('id',$id);
-$this->db->order_by('id','DESC');
-$query =  $this->db->get('articles');
-if($query->num_rows() < 0) {
-  return mysqli_error();
-} else {
-    return $query->row();
-}
-}
-
-public function get_volume() {
-  $query = $this->db->get('volume');
-  if($query->num_rows() < 0) {
-    return false;
-  } else {
-      return $query->result_array();
-  }
-}
-
-public function get_issue() {
-  $query = $this->db->get('issue');
-  if($query->num_rows() < 0) {
-    return false;
-  } else {
-      return $query->result_array();
-  }
-}
-
-public function get_editor() {
-  $this->db->where('position','editor');
-  $query = $this->db->get('users');
-  if($query->num_rows() < 0) {
-    return false;
-  } else {
-      return $query->result_array();
-  }
 }
 
 public function get_payments() {
@@ -118,15 +68,6 @@ if($query->num_rows() < 0) {
 }
 }
 
-public function get_archive() {
-$query =  $this->db->get('archive');
-if($query->num_rows() < 0) {
-  return false;
-} else {
-    return $query->result_array();
-}
-}
-
 public function update_news() {
   $this->db->where('id',$this->input->post('id'));
   $query = $this->db->update('news', $this->input->post());
@@ -134,86 +75,6 @@ public function update_news() {
     return true;
   } else {
     return false;
-  }
-}
-
-public function get_issues() {
-  $this->db->where('volume',$this->input->post('volume'));
-  $query = $this->db->get('issue');
-  return $query->result_array();
-}
-
-public function get_volumes() {
-  $this->db->where('archive',$this->input->post('archive'));
-  $query = $this->db->get('volume');
-  return $query->result_array();
-}
-
-public function save_issue() {
-  $query = $this->db->insert('issue', $this->input->post());
-  if($query) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-public function update_issue() {
-  $this->db->where('id',$this->input->post('id'));
-  $query = $this->db->update('issue', $this->input->post());
-  if($query) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-public function update_archive() {
-  $this->db->where('id',$this->input->post('id'));
-  $query = $this->db->update('archive', $this->input->post());
-  if($query) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-public function save_volume() {
-  $query = $this->db->insert('volume', $this->input->post());
-  if($query) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-
-
-public function update_volume() {
-  $this->db->where('id',$this->input->post('id'));
-  $query = $this->db->update('volume', $this->input->post());
-  if($query) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-public function publish_article() {
-  $query = $this->db->insert('articles', $this->input->post());
-  if($query) {
-    return true;
-  } else {
-    return mysqli_error();
-  }
-}
-
-public function submit() {
-  $query = $this->db->insert('submissions', $this->input->post());
-  if($query) {
-    return true;
-  } else {
-    return mysqli_error();
   }
 }
 
@@ -226,70 +87,33 @@ public function publish_news() {
   }
 }
 
-
-
-public function delete_item() {
-  $type = $this->input->post('type');
-
-  if($type=="volume") {
-  $this->db->where('id',$this->input->post('id'));
-  $query = $this->db->delete('volume');
-  if($query) {
-    return true;
-  } else {
-    return mysqli_error();
-  }
-}   elseif($type=="issue") {
-  $this->db->where('id',$this->input->post('id'));
-  $query = $this->db->delete('issue');
-  if($query) {
-    return true;
-  } else {
-    return mysqli_error();
-  }
-}   elseif($type=="article") {
-  $this->db->where('id',$this->input->post('id'));
-  $query = $this->db->delete('articles');
-  if($query) {
-    return true;
-  } else {
-    return mysqli_error();
-  }
-}  elseif($type=="news") {
-  $this->db->where('id',$this->input->post('id'));
-  $query = $this->db->delete('news');
-  if($query) {
-    return true;
-  } else {
-    return mysqli_error();
-  }
-}  elseif($type=="users") {
-  $this->db->where('id',$this->input->post('id'));
-  $query = $this->db->delete('users');
-  if($query) {
-    return true;
-  } else {
-    return mysqli_error();
-  }
-}
-  elseif($type=="archive") {
-    $this->db->where('id',$this->input->post('id'));
-    $query = $this->db->delete('archive');
-    if($query) {
-      return true;
-    } else {
-      return mysqli_error();
-    }
-}
-
-}
-
-public function count_articles() {
+public function count_users() {
 $this->db->select('*');
-$this->db->where('issue',$this->input->post('issue'));
-$this->db->from('articles');
+$this->db->from('users');
 return $this->db->count_all_results();
-
+}
+public function count_contracts() {
+$this->db->select('*');
+$this->db->from('contract_bidding');
+return $this->db->count_all_results();
+}
+public function count_contracts_pending() {
+$this->db->where('bid_status','pending');
+$this->db->select('*');
+$this->db->from('bids');
+return $this->db->count_all_results();
+}
+public function count_contracts_approved() {
+$this->db->where('bid_status','approved');
+$this->db->select('*');
+$this->db->from('bids');
+return $this->db->count_all_results();
+}
+public function count_contracts_active() {
+$this->db->where('contract_status','active');
+$this->db->select('*');
+$this->db->from('bids');
+return $this->db->count_all_results();
 }
 
 public function update_article() {

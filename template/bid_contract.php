@@ -31,7 +31,7 @@
 
                         </div>
                         <div class="col-auto">
-                          <button class="btn btn-success">See more details</button>
+                          <a class="btn btn-success" href="<?php echo base_url();?>bidding/contract_details/<?php echo $res['bid_number'];?>">See more details</a>
                         </div>
                       </div>
                     </div>

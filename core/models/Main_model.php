@@ -1,11 +1,10 @@
 <?php
 Class Main_model Extends CI_model {
 
-  public function publish_contract($nid) {
+//Contracts start
+  public function publish_contract() {
     $arr = $this->input->post();
-    $new = array('bid_number' => mb_strtoupper($nid));
-    $data = array_merge($arr,$new);
-    $query = $this->db->insert('contract_bidding', $data);
+    $query = $this->db->insert('contracts', $arr);
     if($query) {
       return true;
     } else {
@@ -15,7 +14,7 @@ Class Main_model Extends CI_model {
 
   public function update_contract() {
     $this->db->where('id',$this->input->post('id'));
-    $query = $this->db->update('contract_bidding', $this->input->post());
+    $query = $this->db->update('contracts', $this->input->post());
     if($query) {
       return true;
     } else {
@@ -23,26 +22,21 @@ Class Main_model Extends CI_model {
     }
   }
 
-public function get_submissions() {
-$query =  $this->db->get('submissions');
-if($query->num_rows() < 0) {
-  return false;
-} else {
-    return $query->result_array();
-}
-}
-
-public function get_bids() {
-$query =  $this->db->get('pending_bids');
-if($query->num_rows() < 0) {
-  return false;
-} else {
-    return $query->result_array();
-}
-}
-
 public function get_contracts() {
-$query =  $this->db->get('contract_bidding');
+$this->db->where('owner_email',$this->session->email);
+$query =  $this->db->get('contracts');
+if($query->num_rows() < 0) {
+  return false;
+} else {
+    return $query->result_array();
+}
+}
+//Contracts end
+
+//Event start
+public function get_events() {
+$this->db->where('owner_email',$this->session->email);
+$query =  $this->db->get('events');
 if($query->num_rows() < 0) {
   return false;
 } else {
@@ -50,6 +44,28 @@ if($query->num_rows() < 0) {
 }
 }
 
+public function publish_event() {
+  $arr = $this->input->post();
+  $query = $this->db->insert('events', $arr);
+  if($query) {
+    return true;
+  } else {
+    return mysqli_error();
+  }
+}
+
+public function update_event() {
+  $this->db->where('id',$this->input->post('id'));
+  $query = $this->db->update('events', $this->input->post());
+  if($query) {
+    return true;
+  } else {
+    return mysqli_error();
+  }
+}
+//Event end
+
+//Bidding start
 public function get_contracts_where($bid_number) {
 $this->db->where('bid_number',$bid_number);
 $query =  $this->db->get('contract_bidding');
@@ -61,7 +77,9 @@ if($query->num_rows() < 0) {
 }
 
 public function get_approved_bids() {
-$query =  $this->db->get('approved_bids');
+$this->db->where('bid_by_email',$this->session->email);
+$this->db->where('bid_status','approved');
+$query =  $this->db->get('bids');
 if($query->num_rows() < 0) {
   return false;
 } else {
@@ -69,8 +87,10 @@ if($query->num_rows() < 0) {
 }
 }
 
-public function get_pending_bids() {
-$query =  $this->db->get('approved_bids');
+public function get_bids() {
+$this->db->where('bid_by_email',$this->session->email);
+$this->db->where('bid_status','pending');
+$query =  $this->db->get('bids');
 if($query->num_rows() < 0) {
   return false;
 } else {
@@ -79,42 +99,32 @@ if($query->num_rows() < 0) {
 }
 
 public function placebid() {
-  $query = $this->db->insert('pending_bids', $this->input->post());
+  $query = $this->db->insert('bids', $this->input->post());
   if($query) {
     return true;
   } else {
-    return false;
+    return mysqli_error();
   }
 }
 
-public function get_issue_link($links0,$links1,$links2) {
-$this->db->where('archive',$links0);
-$this->db->where('volume',$links1);
-$this->db->where('issue',$links2);
-$query =  $this->db->get('articles');
-if($query->num_rows() < 0) {
-  return mysqli_error();
-} else {
-    return $query->result_array();
+public function update_contract_bid() {
+  $this->db->where('bid_number',$this->input->post('contract_number'));
+  $this->db->where('bid_by_email',$this->input->post('owner_email'));
+  $this->db->set('end_date',$this->input->post('end_date'));
+  $query = $this->db->update('bids');
+  if($query) {
+    return true;
+  } else {
+    return mysqli_error();
+  }
 }
-}
+//Bidding end
 
-public function get_article_link($links0,$links1,$links2,$id) {
-$this->db->where('archive',$links0);
-$this->db->where('volume',$links1);
-$this->db->where('issue',$links2);
-$this->db->where('id',$id);
-$this->db->order_by('id','DESC');
-$query =  $this->db->get('articles');
-if($query->num_rows() < 0) {
-  return mysqli_error();
-} else {
-    return $query->row();
-}
-}
 
-public function get_volume() {
-  $query = $this->db->get('volume');
+public function get_contracts_new() {
+  $this->db->order_by('date','DESC');
+  $this->db->limit(1);
+  $query = $this->db->get('contract_bidding');
   if($query->num_rows() < 0) {
     return false;
   } else {
@@ -122,46 +132,65 @@ public function get_volume() {
   }
 }
 
-public function get_issue() {
-  $query = $this->db->get('issue');
+public function get_events_where() {
+  $this->db->where('owner_email',$this->session->email);
+  $this->db->order_by('event_date','DESC');
+  $this->db->limit(1);
+  $query = $this->db->get('events');
   if($query->num_rows() < 0) {
     return false;
   } else {
       return $query->result_array();
   }
 }
-
-public function get_editor() {
-  $this->db->where('position','editor');
-  $query = $this->db->get('users');
+public function get_events_limit() {
+  $this->db->where('owner','ePROCLOUD');
+  $this->db->order_by('event_date','DESC');
+  $this->db->limit(1);
+  $query = $this->db->get('events');
   if($query->num_rows() < 0) {
     return false;
   } else {
       return $query->result_array();
   }
 }
-
-public function get_payments() {
-  $this->db->where('status','paid');
-  $query = $this->db->get('payments');
-  if($query->num_rows() < 0) {
-    return false;
-  } else {
-      return $query->result_array();
-  }
+public function count_contracts() {
+$this->db->where('owner_email',$this->session->email);
+$this->db->select('*');
+$this->db->from('contracts');
+return $this->db->count_all_results();
+}
+public function count_contracts_pending() {
+$this->db->where('bid_by_email',$this->session->email);
+$this->db->where('bid_status','pending');
+$this->db->select('*');
+$this->db->from('bids');
+return $this->db->count_all_results();
+}
+public function count_contracts_finished() {
+$this->db->where('bid_by_email',$this->session->email);
+$this->db->where('has_finished','completed');
+$this->db->select('*');
+$this->db->from('bids');
+return $this->db->count_all_results();
+}
+public function count_contracts_approved() {
+$this->db->where('bid_by_email',$this->session->email);
+$this->db->where('bid_status','approved');
+$this->db->select('*');
+$this->db->from('bids');
+return $this->db->count_all_results();
+}
+public function count_contracts_active() {
+$this->db->where('bid_by_email',$this->session->email);
+$this->db->where('contract_status','active');
+$this->db->select('*');
+$this->db->from('bids');
+return $this->db->count_all_results();
 }
 
 public function get_news() {
 $query =  $this->db->get('news');
-if($query->num_rows() < 0) {
-  return false;
-} else {
-    return $query->result_array();
-}
-}
-
-public function get_archive() {
-$query =  $this->db->get('archive');
 if($query->num_rows() < 0) {
   return false;
 } else {
@@ -179,111 +208,38 @@ public function update_news() {
   }
 }
 
-public function get_issues() {
-  $this->db->where('volume',$this->input->post('volume'));
-  $query = $this->db->get('issue');
-  return $query->result_array();
-}
 
-public function get_volumes() {
-  $this->db->where('archive',$this->input->post('archive'));
-  $query = $this->db->get('volume');
-  return $query->result_array();
-}
-
-
-
-public function update_issue() {
-  $this->db->where('id',$this->input->post('id'));
-  $query = $this->db->update('issue', $this->input->post());
-  if($query) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-public function update_archive() {
-  $this->db->where('id',$this->input->post('id'));
-  $query = $this->db->update('archive', $this->input->post());
-  if($query) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-public function save_volume() {
-  $query = $this->db->insert('volume', $this->input->post());
-  if($query) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-public function save_archive() {
-  $query = $this->db->insert('archive', $this->input->post());
+public function send_message() {
+  $query = $this->db->insert('contacts', $this->input->post());
   if($query) {
     return true;
   } else {
     return mysqli_error();
   }
 }
-
-public function update_volume() {
-  $this->db->where('id',$this->input->post('id'));
-  $query = $this->db->update('volume', $this->input->post());
-  if($query) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-
-public function submit() {
-  $query = $this->db->insert('submissions', $this->input->post());
-  if($query) {
-    return true;
-  } else {
-    return mysqli_error();
-  }
-}
-
-public function publish_news() {
-  $query = $this->db->insert('news', $this->input->post());
-  if($query) {
-    return true;
-  } else {
-    return mysqli_error();
-  }
-}
-
-
 
 public function delete_item() {
   $type = $this->input->post('type');
 
-  if($type=="volume") {
+  if($type=="contract_bid") {
   $this->db->where('id',$this->input->post('id'));
-  $query = $this->db->delete('volume');
+  $query = $this->db->delete('contract_bidding');
   if($query) {
     return true;
   } else {
     return mysqli_error();
   }
-}   elseif($type=="issue") {
+}   elseif($type=="contract") {
   $this->db->where('id',$this->input->post('id'));
-  $query = $this->db->delete('issue');
+  $query = $this->db->delete('contracts');
   if($query) {
     return true;
   } else {
     return mysqli_error();
   }
-}   elseif($type=="article") {
+}   elseif($type=="event") {
   $this->db->where('id',$this->input->post('id'));
-  $query = $this->db->delete('articles');
+  $query = $this->db->delete('events');
   if($query) {
     return true;
   } else {
