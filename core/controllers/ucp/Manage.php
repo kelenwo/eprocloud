@@ -8,7 +8,7 @@ class Manage extends CI_Controller {
 if(empty($this->session->email)) {
 header('Location:'.base_url().'ucp/login');
 }
-if($this->session->position=='member') {
+if($this->session->rights !=='administrator') {
     header('Location:'.base_url('dashboard'));
 }
 }
