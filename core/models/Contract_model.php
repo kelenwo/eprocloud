@@ -40,6 +40,22 @@ Class Contract_model Extends CI_model {
       return mysqli_error();
     }
   }
+
+  public function update_bid_auto($bid_number,$id) {
+    $data = array(
+    'bid_status' => 'approved',
+    'approval_date' => date(' d F, Y'),
+    );
+    $this->db->where('id',$id);
+    $this->db->where('bid_number',$bid_number);
+    $query = $this->db->update('bids', $data);
+    if($query) {
+      return true;
+    } else {
+      return mysqli_error();
+    }
+  }
+
   public function update_contract_where() {
     $this->db->set('status','completed');
     $this->db->where('contract_number',$this->input->post('bid_number'));
@@ -94,5 +110,19 @@ public function get_bid_where() {
   $this->db->where('bid_by_email',$this->input->post('bid_by_email'));
 $query =  $this->db->get('bids');
     return $query->row();
+}
+public function get_bids_avg($bid_number){
+  $this->db->select('*');
+  $this->db->where('bid_number',$bid_number);
+  $this->db->order_by('bid_amount');
+$query = $this->db->get('bids');
+return $query->result_array();
+}
+
+public function avg() {
+  $this->db->select('*');
+  $this->db->order_by('bid_amount');
+$query = $this->db->get('bids');
+return $query->result_array();
 }
 }

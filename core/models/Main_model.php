@@ -271,8 +271,6 @@ public function delete_item() {
       return mysqli_error();
     }
 }
-
 }
-
 
 }

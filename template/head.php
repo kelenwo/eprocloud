@@ -61,6 +61,13 @@
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
+      <?php if($rights=="administrator"):?>
+        <li class="nav-item">
+          <a class="nav-link" href="<?php echo base_url();?>ucp/manage">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Admin Panel</span></a>
+        </li>
+      <?php endif;?>
 
       <!-- Divider -->
       <hr class="sidebar-divider">

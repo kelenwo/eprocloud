@@ -6,7 +6,7 @@ Class Login Extends CI_Controller{
   $this->load->view('admin/login');
   }
   public function signin($return,$link) {
-  $data['link'] = str_replace('_','/',$link);
+  $data['link'] = str_replace('-','/',$link);
   $this->parser->parse('admin/logins',$data);
   }
   public function logins() {
